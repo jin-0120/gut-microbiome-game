@@ -1,0 +1,4596 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="肠道小宇宙是一款三分钟肠道微生态科普小游戏。通过三个日常选择，观察菌群、膳食多样性与肠道屏障的游戏内变化。"
+    />
+    <meta name="theme-color" content="#173f3b" />
+    <title>肠道小宇宙 · 3关生态挑战</title>
+    <style>
+:root {
+  --ink: #173f3b;
+  --ink-soft: #3d5e58;
+  --ink-muted: #6d7e78;
+  --paper: #fbf7f0;
+  --cream: #f2eadf;
+  --cream-deep: #e8dccc;
+  --white: #fffdf8;
+  --mint: #3c8b78;
+  --mint-soft: #dcebe3;
+  --teal: #2f6e72;
+  --sky: #597e96;
+  --amber: #d79b3e;
+  --amber-soft: #f4e6c8;
+  --coral: #c7654d;
+  --coral-soft: #f5ddd5;
+  --line: rgba(23, 63, 59, 0.15);
+  --shadow: 0 18px 50px rgba(40, 60, 53, 0.09);
+  --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --font-serif: "Songti SC", "STSong", "Noto Serif CJK SC", Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--paper);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.66), transparent 38%),
+    var(--paper);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+summary {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid rgba(47, 110, 114, 0.35);
+  outline-offset: 3px;
+}
+
+svg {
+  display: block;
+}
+
+.icon-library {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.page-texture {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(23, 63, 59, 0.16) 0.6px, transparent 0.6px);
+  background-size: 18px 18px;
+  opacity: 0.34;
+  mask-image: linear-gradient(to bottom, #000, transparent 76%);
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(1180px, calc(100% - 48px));
+  min-height: 88px;
+  margin: 0 auto;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.brand-icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--white);
+  background: var(--ink);
+}
+
+.brand-icon svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.brand-copy strong {
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.brand-copy small {
+  color: var(--ink-muted);
+  font-size: 11px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.science-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.science-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--mint);
+  box-shadow: 0 0 0 4px rgba(60, 139, 120, 0.12);
+}
+
+.text-button,
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid var(--line);
+  background: rgba(255, 253, 248, 0.72);
+  cursor: pointer;
+}
+
+.text-button {
+  padding: 8px 11px;
+  border-radius: 6px;
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.text-button svg,
+.secondary-button svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.text-button:hover,
+.secondary-button:hover {
+  border-color: rgba(23, 63, 59, 0.3);
+  background: var(--white);
+}
+
+.app-shell {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+  animation: screen-in 0.48s ease both;
+}
+
+.start-screen {
+  min-height: calc(100vh - 88px);
+  grid-template-columns: minmax(340px, 0.78fr) minmax(480px, 1.22fr);
+  align-items: center;
+  gap: clamp(42px, 7vw, 92px);
+  padding: 54px 0 66px;
+}
+
+.start-screen.is-active {
+  display: grid;
+}
+
+.start-copy {
+  max-width: 500px;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 20px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.eyebrow-line {
+  width: 26px;
+  height: 1px;
+  background: var(--mint);
+}
+
+.start-copy h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(48px, 5.8vw, 78px);
+  font-weight: 650;
+  line-height: 1.08;
+}
+
+.start-copy h1 span {
+  color: var(--mint);
+}
+
+.start-lead {
+  max-width: 430px;
+  margin: 28px 0 0;
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.start-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 32px;
+}
+
+.primary-button {
+  display: inline-flex;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 6px;
+  color: var(--white);
+  background: var(--ink);
+  box-shadow: 0 12px 24px rgba(23, 63, 59, 0.16);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.primary-button:hover {
+  background: #20554f;
+  box-shadow: 0 15px 28px rgba(23, 63, 59, 0.22);
+  transform: translateY(-2px);
+}
+
+.primary-button:active {
+  transform: translateY(0);
+}
+
+.primary-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.start-meta {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.start-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin-top: 34px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.start-facts span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.start-facts svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--mint);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.start-visual {
+  position: relative;
+  min-width: 0;
+}
+
+.garden-art {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 24px 34px rgba(68, 75, 64, 0.12));
+}
+
+.visual-label {
+  position: absolute;
+  z-index: 2;
+  top: 4%;
+  right: 2%;
+  left: 3%;
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-soft);
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.visual-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.visual-live i,
+.live-tag i {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--mint);
+  animation: live-pulse 1.8s ease-in-out infinite;
+}
+
+.organic-line {
+  fill: none;
+  stroke: rgba(61, 94, 88, 0.2);
+  stroke-width: 1.2;
+  stroke-dasharray: 2 10;
+}
+
+.gut-shadow {
+  fill: none;
+  stroke: rgba(75, 62, 54, 0.12);
+  stroke-width: 166;
+  stroke-linecap: round;
+  transform: translateY(9px);
+}
+
+.gut-outer {
+  fill: none;
+  stroke: url("#gutOuter");
+  stroke-width: 154;
+  stroke-linecap: round;
+}
+
+.gut-inner {
+  fill: none;
+  stroke: url("#gutInner");
+  stroke-width: 128;
+  stroke-linecap: round;
+}
+
+.gut-shine {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.62);
+  stroke-width: 9;
+  stroke-linecap: round;
+}
+
+.villi path {
+  fill: none;
+  stroke: rgba(201, 121, 101, 0.38);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.microbe-tail {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.microbe-cluster-a g {
+  color: #2d8174;
+  animation: microbe-drift 5.5s ease-in-out infinite;
+}
+
+.microbe-cluster-a g:nth-child(2) {
+  color: #e49350;
+  animation-delay: -1.1s;
+}
+
+.microbe-cluster-a g:nth-child(3) {
+  color: #5a7996;
+  animation-delay: -2.4s;
+}
+
+.microbe-cluster-a g:nth-child(4) {
+  color: #c67d50;
+  animation-delay: -3.6s;
+}
+
+.microbe-cluster-a g:nth-child(5) {
+  color: #408c86;
+  animation-delay: -4.8s;
+}
+
+.microbe-cluster-b g {
+  animation: microbe-drift 6.3s ease-in-out infinite reverse;
+}
+
+.microbe-cluster-b g:nth-child(2) {
+  animation-delay: -2s;
+}
+
+.microbe-cluster-b g:nth-child(3) {
+  animation-delay: -3.2s;
+}
+
+.microbe-cluster-b g:nth-child(4) {
+  animation-delay: -4.4s;
+}
+
+.floating-note rect {
+  fill: rgba(255, 253, 248, 0.9);
+  stroke: rgba(23, 63, 59, 0.13);
+}
+
+.floating-note circle {
+  fill: var(--mint-soft);
+  stroke: var(--mint);
+  stroke-width: 1.2;
+}
+
+.floating-note path {
+  fill: none;
+  stroke: var(--mint);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.floating-note text {
+  fill: var(--ink-soft);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.note-one {
+  animation: note-float 4.8s ease-in-out infinite;
+}
+
+.note-two {
+  animation: note-float 5.4s ease-in-out -2.1s infinite reverse;
+}
+
+.art-caption text {
+  fill: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 650;
+}
+
+.art-caption .art-caption-small {
+  fill: var(--ink-muted);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.visual-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 8px 22px 0;
+  color: var(--ink-muted);
+  font-size: 11px;
+}
+
+.visual-foot span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.legend-dot.good {
+  background: var(--mint);
+}
+
+.legend-dot.diverse {
+  background: var(--amber);
+}
+
+.legend-dot.risk {
+  background: var(--coral);
+}
+
+.game-screen {
+  padding: 38px 0 56px;
+}
+
+.run-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 34px;
+  margin-bottom: 26px;
+}
+
+.run-header .eyebrow {
+  margin-bottom: 10px;
+}
+
+.run-header h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(30px, 3.7vw, 45px);
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.run-progress {
+  width: min(310px, 36%);
+  padding-bottom: 4px;
+}
+
+.progress-copy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 9px;
+  color: var(--ink-muted);
+  font-size: 11px;
+}
+
+.progress-copy strong {
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.progress-track {
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(23, 63, 59, 0.1);
+}
+
+.progress-track span {
+  display: block;
+  width: 33.333%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--mint);
+  transition: width 420ms ease;
+}
+
+.metric-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.metric-card {
+  position: relative;
+  min-width: 0;
+  padding: 15px 16px 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: rgba(255, 253, 248, 0.78);
+}
+
+.metric-card::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  content: "";
+  background: var(--metric-color);
+  opacity: 0.8;
+}
+
+.metric-good {
+  --metric-color: var(--mint);
+}
+
+.metric-diversity {
+  --metric-color: var(--amber);
+}
+
+.metric-barrier {
+  --metric-color: var(--sky);
+}
+
+.metric-risk {
+  --metric-color: var(--coral);
+}
+
+.metric-heading {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.metric-icon {
+  display: grid;
+  width: 23px;
+  height: 23px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--metric-color);
+  background: color-mix(in srgb, var(--metric-color) 12%, transparent);
+}
+
+.metric-icon svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.metric-number {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  margin-top: 10px;
+}
+
+.metric-number strong {
+  font-family: var(--font-serif);
+  font-size: 27px;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.metric-number span {
+  color: var(--ink-muted);
+  font-size: 10px;
+}
+
+.metric-track {
+  height: 4px;
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(23, 63, 59, 0.08);
+}
+
+.metric-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--metric-color);
+  transition: width 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.metric-note {
+  margin: 9px 0 0;
+  overflow: hidden;
+  color: var(--ink-muted);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metric-card.is-changing {
+  animation: metric-flash 620ms ease;
+}
+
+.play-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(380px, 0.9fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.eco-panel,
+.scenario-panel,
+.report-panel {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.78);
+}
+
+.eco-panel {
+  display: flex;
+  min-height: 634px;
+  flex-direction: column;
+  padding: 22px;
+}
+
+.panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.panel-kicker {
+  margin: 0 0 5px;
+  color: var(--ink-muted);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.panel-heading h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 23px;
+  font-weight: 650;
+}
+
+.live-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 9px;
+  border: 1px solid rgba(60, 139, 120, 0.2);
+  border-radius: 4px;
+  color: var(--mint);
+  background: rgba(220, 235, 227, 0.56);
+  font-size: 10px;
+}
+
+.eco-canvas {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  place-items: center;
+  margin-top: 14px;
+}
+
+.eco-canvas svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.eco-wash {
+  fill: none;
+  stroke: rgba(60, 139, 120, 0.13);
+  stroke-width: 82;
+  stroke-linecap: round;
+}
+
+.eco-gut-shadow {
+  fill: none;
+  stroke: rgba(75, 62, 54, 0.09);
+  stroke-width: 150;
+  stroke-linecap: round;
+  transform: translateY(8px);
+}
+
+.eco-gut-outer {
+  fill: none;
+  stroke: url("#ecoGutOuter");
+  stroke-width: 138;
+  stroke-linecap: round;
+  transition: stroke-width 500ms ease;
+}
+
+.eco-gut-inner {
+  fill: none;
+  stroke: url("#ecoGutInner");
+  stroke-width: 114;
+  stroke-linecap: round;
+}
+
+.eco-gut-highlight {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.56);
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.microbe-layer,
+.barrier-layer {
+  transform-origin: center;
+  transition:
+    opacity 750ms ease,
+    transform 750ms ease;
+}
+
+.barrier-layer {
+  fill: none;
+  stroke: #f2cb67;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.eco-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.eco-status {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.eco-status-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--mint);
+  background: var(--mint-soft);
+}
+
+.eco-status-icon svg,
+.tip-mark svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.eco-status div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.eco-status span {
+  color: var(--ink-muted);
+  font-size: 9px;
+}
+
+.eco-status strong {
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.eco-footer > p {
+  max-width: 180px;
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+.scenario-panel {
+  display: flex;
+  min-height: 634px;
+  flex-direction: column;
+  padding: 28px;
+}
+
+.scenario-copy {
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.scenario-kicker {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 15px;
+  color: var(--ink-muted);
+  font-size: 10px;
+}
+
+.scenario-kicker span:first-child {
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.scenario-copy h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.scenario-copy > p {
+  margin: 13px 0 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.scenario-copy .scenario-question {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.choice-list {
+  display: grid;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+.choice-button {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 34px minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 13px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  background: var(--white);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease,
+    background 180ms ease,
+    opacity 180ms ease;
+}
+
+.choice-button:hover:not(:disabled) {
+  border-color: rgba(47, 110, 114, 0.44);
+  background: #fffefa;
+  transform: translateY(-1px);
+}
+
+.choice-button:disabled {
+  cursor: default;
+}
+
+.choice-button.is-selected {
+  border-color: var(--mint);
+  background: rgba(220, 235, 227, 0.52);
+}
+
+.choice-button.is-muted {
+  opacity: 0.44;
+}
+
+.choice-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--teal);
+  background: rgba(89, 126, 150, 0.11);
+}
+
+.choice-button.is-selected .choice-icon {
+  color: var(--white);
+  background: var(--mint);
+}
+
+.choice-icon svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.choice-copy {
+  min-width: 0;
+}
+
+.choice-copy strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.choice-copy small {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink-muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.choice-arrow {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--ink-muted);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.choice-button.is-selected .choice-arrow {
+  stroke: var(--mint);
+}
+
+.feedback-panel {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  animation: feedback-in 0.4s ease both;
+}
+
+.feedback-panel[hidden] {
+  display: none;
+}
+
+.feedback-heading {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.feedback-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.feedback-icon svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.feedback-heading p {
+  margin: 0 0 2px;
+  color: var(--ink-muted);
+  font-size: 9px;
+}
+
+.feedback-heading h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.feedback-body {
+  margin: 13px 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.effect-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.effect-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 7px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.effect-chip.positive {
+  color: #246b5b;
+  background: var(--mint-soft);
+}
+
+.effect-chip.negative {
+  color: #a14a36;
+  background: var(--coral-soft);
+}
+
+.science-footnote {
+  margin-top: 11px;
+  color: var(--ink-muted);
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+.next-button {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 17px;
+  font-size: 12px;
+}
+
+.result-screen {
+  padding: 48px 0 66px;
+}
+
+.result-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px;
+  align-items: center;
+  gap: 50px;
+  padding: 24px 10px 42px;
+}
+
+.result-copy h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(44px, 5.8vw, 72px);
+  font-weight: 650;
+  line-height: 1.12;
+}
+
+.result-copy > p:not(.eyebrow) {
+  max-width: 680px;
+  margin: 18px 0 0;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.secondary-button {
+  min-height: 50px;
+  padding: 0 18px;
+  border-radius: 6px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.score-display {
+  position: relative;
+  width: 190px;
+  height: 190px;
+}
+
+.score-display > svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.score-track,
+.score-progress {
+  fill: none;
+  stroke-width: 7;
+}
+
+.score-track {
+  stroke: rgba(23, 63, 59, 0.1);
+}
+
+.score-progress {
+  stroke: var(--mint);
+  stroke-linecap: round;
+  stroke-dasharray: 351.86;
+  stroke-dashoffset: 351.86;
+  transition: stroke-dashoffset 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.score-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.score-value strong {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.score-value span {
+  color: var(--ink-muted);
+  font-size: 9px;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+  gap: 16px;
+}
+
+.report-panel {
+  padding: 26px;
+}
+
+.best-score {
+  color: var(--ink-muted);
+  font-size: 10px;
+}
+
+.report-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.report-metric {
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: rgba(251, 247, 240, 0.66);
+}
+
+.report-metric-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.report-metric-head span {
+  color: var(--ink-soft);
+  font-size: 10px;
+}
+
+.report-metric-head strong {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 650;
+}
+
+.report-metric .metric-track {
+  margin-top: 9px;
+}
+
+.report-metric .metric-fill {
+  background: var(--report-color);
+}
+
+.history-list {
+  display: grid;
+  gap: 0;
+  margin-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: 66px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 13px 2px;
+  border-bottom: 1px solid var(--line);
+}
+
+.history-day {
+  color: var(--ink-muted);
+  font-size: 9px;
+}
+
+.history-choice {
+  min-width: 0;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.history-tag {
+  padding: 4px 6px;
+  border-radius: 3px;
+  color: var(--ink-soft);
+  background: var(--cream);
+  font-size: 8px;
+  white-space: nowrap;
+}
+
+.tip-mark {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--mint);
+  background: var(--mint-soft);
+}
+
+.report-tips ul {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.report-tips li {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 10px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.report-tips li span {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--mint);
+  background: var(--mint-soft);
+}
+
+.report-tips li svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.report-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 5px;
+  color: var(--ink-muted);
+  background: var(--cream);
+}
+
+.report-note svg {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
+  margin-top: 1px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.report-note p {
+  margin: 0;
+  font-size: 9px;
+  line-height: 1.65;
+}
+
+.source-details {
+  margin-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.source-details summary {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 15px 0 4px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 650;
+  list-style: none;
+}
+
+.source-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.source-details summary svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.source-details p {
+  margin: 7px 0 0;
+  color: var(--ink-muted);
+  font-size: 9px;
+  line-height: 1.75;
+}
+
+.disclaimer {
+  max-width: 800px;
+  margin: 24px auto 0;
+  color: var(--ink-muted);
+  font-size: 10px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.toast {
+  position: fixed;
+  z-index: 20;
+  right: 24px;
+  bottom: 24px;
+  max-width: min(360px, calc(100vw - 48px));
+  padding: 11px 15px;
+  border-radius: 5px;
+  color: var(--white);
+  background: var(--ink);
+  box-shadow: var(--shadow);
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes screen-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes feedback-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes live-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes microbe-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(3px, -5px);
+  }
+}
+
+@keyframes note-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes metric-flash {
+  0% {
+    background: rgba(255, 253, 248, 0.78);
+  }
+  45% {
+    background: rgba(220, 235, 227, 0.92);
+  }
+  100% {
+    background: rgba(255, 253, 248, 0.78);
+  }
+}
+
+@media (max-width: 980px) {
+  .start-screen {
+    grid-template-columns: minmax(300px, 0.8fr) minmax(420px, 1.2fr);
+    gap: 28px;
+  }
+
+  .start-actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .play-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 0.9fr);
+  }
+
+  .eco-panel,
+  .scenario-panel {
+    min-height: 610px;
+  }
+
+  .eco-panel {
+    padding: 18px;
+  }
+
+  .scenario-panel {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 780px) {
+  .site-header,
+  .app-shell {
+    width: min(100% - 30px, 680px);
+  }
+
+  .site-header {
+    min-height: 74px;
+  }
+
+  .science-badge {
+    display: none;
+  }
+
+  .start-screen {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 42px 0 44px;
+  }
+
+  .start-copy {
+    max-width: 620px;
+  }
+
+  .start-copy h1 {
+    font-size: clamp(46px, 12vw, 68px);
+  }
+
+  .start-lead {
+    margin-top: 22px;
+  }
+
+  .start-visual {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .run-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .run-progress {
+    width: 100%;
+  }
+
+  .metric-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .play-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .eco-panel,
+  .scenario-panel {
+    min-height: 0;
+  }
+
+  .eco-panel {
+    padding: 18px;
+  }
+
+  .eco-canvas {
+    min-height: 280px;
+  }
+
+  .scenario-panel {
+    padding: 24px 20px;
+  }
+
+  .result-head {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-bottom: 32px;
+  }
+
+  .score-display {
+    width: 158px;
+    height: 158px;
+  }
+
+  .score-value strong {
+    font-size: 40px;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .site-header,
+  .app-shell {
+    width: calc(100% - 24px);
+  }
+
+  .brand-copy small {
+    display: none;
+  }
+
+  .brand-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .text-button {
+    padding: 7px 9px;
+  }
+
+  .start-screen {
+    padding-top: 30px;
+  }
+
+  .eyebrow {
+    margin-bottom: 15px;
+  }
+
+  .start-copy h1 {
+    font-size: clamp(42px, 13vw, 58px);
+  }
+
+  .start-lead {
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .start-actions .primary-button {
+    width: 100%;
+  }
+
+  .start-meta {
+    font-size: 11px;
+  }
+
+  .garden-art {
+    margin-left: -2%;
+    width: 104%;
+  }
+
+  .floating-note {
+    display: none;
+  }
+
+  .visual-label {
+    top: 3%;
+  }
+
+  .visual-foot {
+    margin: 4px 8px 0;
+  }
+
+  .game-screen {
+    padding-top: 26px;
+  }
+
+  .run-header h1 {
+    font-size: 27px;
+  }
+
+  .metric-strip {
+    gap: 8px;
+  }
+
+  .metric-card {
+    padding: 13px;
+  }
+
+  .metric-heading {
+    font-size: 10px;
+  }
+
+  .metric-number strong {
+    font-size: 24px;
+  }
+
+  .eco-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .eco-footer > p {
+    max-width: none;
+    padding-left: 44px;
+  }
+
+  .scenario-panel {
+    padding: 21px 16px;
+  }
+
+  .scenario-copy h2 {
+    font-size: 25px;
+  }
+
+  .choice-button {
+    grid-template-columns: 31px minmax(0, 1fr) 18px;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .choice-icon {
+    width: 31px;
+    height: 31px;
+  }
+
+  .choice-copy strong {
+    font-size: 12px;
+  }
+
+  .choice-copy small {
+    font-size: 9px;
+  }
+
+  .result-screen {
+    padding-top: 32px;
+  }
+
+  .result-copy h1 {
+    font-size: 44px;
+  }
+
+  .result-copy > p:not(.eyebrow) {
+    font-size: 13px;
+  }
+
+  .result-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .result-actions .primary-button,
+  .result-actions .secondary-button {
+    width: 100%;
+  }
+
+  .report-panel {
+    padding: 20px 16px;
+  }
+
+  .report-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .history-item {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .history-tag {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+</style>
+    <style>
+.level-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.level-step {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(255, 253, 248, 0.68);
+}
+
+.level-step-marker {
+  display: grid;
+  width: 25px;
+  height: 25px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--ink-muted);
+  background: var(--cream);
+  font-family: var(--font-serif);
+  font-size: 9px;
+}
+
+.level-step-marker svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.level-step-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.level-step-copy small {
+  color: var(--ink-muted);
+  font-size: 8px;
+}
+
+.level-step-copy strong {
+  overflow: hidden;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.level-step.is-current {
+  border-color: rgba(60, 139, 120, 0.34);
+  background: rgba(220, 235, 227, 0.62);
+}
+
+.level-step.is-current .level-step-marker {
+  color: var(--white);
+  background: var(--mint);
+}
+
+.level-step.is-complete .level-step-marker {
+  color: var(--mint);
+  background: var(--mint-soft);
+}
+
+.level-step.is-upcoming {
+  opacity: 0.56;
+}
+
+.challenge-screen {
+  padding: 38px 0 56px;
+}
+
+.challenge-layout {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.62fr) minmax(460px, 1.38fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.challenge-guide,
+.class-game-panel,
+.matching-panel {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.8);
+}
+
+.challenge-guide {
+  padding: 30px;
+  background:
+    linear-gradient(150deg, rgba(220, 235, 227, 0.68), rgba(255, 253, 248, 0.82) 62%),
+    var(--white);
+}
+
+.challenge-guide > h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 31px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.challenge-guide > p:not(.panel-kicker, .guide-note) {
+  margin: 18px 0 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.guide-note {
+  margin: 30px 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-muted);
+  font-size: 10px;
+  line-height: 1.8;
+}
+
+.class-game-panel {
+  display: flex;
+  min-height: 590px;
+  flex-direction: column;
+  padding: 26px;
+}
+
+.microbe-card {
+  padding: 6px 24px 23px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+
+.microbe-portrait {
+  display: grid;
+  height: 142px;
+  place-items: center;
+}
+
+.microbe-portrait svg {
+  width: min(260px, 80%);
+  height: 100%;
+}
+
+.portrait-line {
+  fill: none;
+  stroke: rgba(60, 139, 120, 0.22);
+  stroke-width: 1.4;
+  stroke-dasharray: 2 8;
+}
+
+.portrait-tail {
+  fill: none;
+  stroke: #568c82;
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke 320ms ease;
+}
+
+.microbe-portrait circle[r="36"] {
+  fill: #6e9d91;
+  transition: fill 320ms ease;
+}
+
+.portrait-smile {
+  fill: none;
+  stroke: #fffaf0;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+.microbe-portrait[data-category="beneficial"] circle[r="36"] {
+  fill: #398b77;
+}
+
+.microbe-portrait[data-category="neutral"] circle[r="36"] {
+  fill: #c18a38;
+}
+
+.microbe-portrait[data-category="risk"] circle[r="36"] {
+  fill: #bc654f;
+}
+
+.microbe-portrait[data-category="risk"] .portrait-tail {
+  stroke: #bc654f;
+}
+
+.card-counter {
+  margin: 3px 0 8px;
+  color: var(--ink-muted);
+  font-size: 9px;
+}
+
+.microbe-card h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 650;
+}
+
+.microbe-latin {
+  margin: 4px 0 0;
+  color: var(--ink-muted);
+  font-family: Georgia, serif;
+  font-size: 11px;
+  font-style: italic;
+}
+
+.microbe-hint {
+  margin: 11px 0 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.class-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 19px;
+}
+
+.class-option {
+  min-height: 58px;
+  padding: 10px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink-soft);
+  background: var(--white);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease,
+    opacity 180ms ease;
+}
+
+.class-option:hover:not(:disabled) {
+  border-color: rgba(23, 63, 59, 0.34);
+  transform: translateY(-2px);
+}
+
+.class-option:disabled {
+  cursor: default;
+}
+
+.class-option strong {
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.option-beneficial.is-correct {
+  border-color: var(--mint);
+  background: var(--mint-soft);
+}
+
+.option-neutral.is-correct {
+  border-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.option-risk.is-correct {
+  border-color: var(--coral);
+  background: var(--coral-soft);
+}
+
+.class-option.is-wrong {
+  border-color: var(--coral);
+  background: var(--coral-soft);
+  opacity: 0.72;
+}
+
+.challenge-feedback {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid rgba(60, 139, 120, 0.2);
+  border-radius: 6px;
+  background: rgba(220, 235, 227, 0.42);
+  animation: feedback-in 0.38s ease both;
+}
+
+.challenge-feedback[hidden] {
+  display: none;
+}
+
+.challenge-feedback.is-wrong {
+  border-color: rgba(199, 101, 77, 0.24);
+  background: rgba(245, 221, 213, 0.4);
+}
+
+.feedback-verdict {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 11px;
+}
+
+.feedback-verdict span {
+  color: var(--mint);
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.challenge-feedback.is-wrong .feedback-verdict span {
+  color: var(--coral);
+}
+
+.feedback-verdict strong {
+  color: var(--ink-soft);
+  font-size: 9px;
+  text-align: right;
+}
+
+.challenge-feedback h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.challenge-feedback > p {
+  margin: 9px 0 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.75;
+}
+
+.knowledge-note {
+  margin-top: 11px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(23, 63, 59, 0.12);
+  color: var(--ink-muted);
+  font-size: 9px;
+  line-height: 1.7;
+}
+
+.challenge-next {
+  width: 100%;
+  min-height: 43px;
+  margin-top: 14px;
+  font-size: 12px;
+}
+
+.matching-panel {
+  padding: 26px;
+}
+
+.matching-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.matching-head h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 27px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.matching-head > p {
+  max-width: 330px;
+  margin: 2px 0 0;
+  color: var(--ink-muted);
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.matching-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 4vw, 46px);
+  margin-top: 24px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(242, 234, 223, 0.5);
+}
+
+.matching-lines {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.match-line {
+  fill: none;
+  stroke: var(--line-color);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+.matching-column {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.matching-column h3 {
+  min-height: 28px;
+  margin: 0 0 9px;
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.match-stack {
+  display: grid;
+  gap: 9px;
+}
+
+.match-card {
+  display: flex;
+  min-height: 82px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  background: var(--white);
+  cursor: pointer;
+  text-align: center;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.match-card:hover:not(:disabled) {
+  border-color: rgba(47, 110, 114, 0.45);
+  transform: translateY(-1px);
+}
+
+.match-card strong {
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.match-card small {
+  color: var(--ink-muted);
+  font-family: Georgia, serif;
+  font-size: 8px;
+  font-style: italic;
+}
+
+.match-card.is-selected {
+  border-color: var(--mint);
+  background: var(--mint-soft);
+  box-shadow: inset 0 0 0 1px var(--mint);
+}
+
+.match-card.is-matched {
+  border-color: rgba(60, 139, 120, 0.42);
+  color: #215e50;
+  background: rgba(220, 235, 227, 0.64);
+  cursor: default;
+}
+
+.match-card.is-wrong {
+  border-color: var(--coral);
+  background: var(--coral-soft);
+  animation: card-shake 320ms ease;
+}
+
+.matching-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  margin-top: 15px;
+}
+
+.matching-actions > p {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.matching-actions .primary-button {
+  min-height: 43px;
+  flex: 0 0 auto;
+  font-size: 11px;
+}
+
+.matching-actions .primary-button:disabled {
+  color: rgba(255, 255, 255, 0.7);
+  background: #82928d;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.matching-feedback {
+  margin-top: 17px;
+}
+
+.level-screen {
+  padding: 50px 0 64px;
+}
+
+.level-complete {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.84);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.level-complete-mark {
+  display: grid;
+  width: 62px;
+  height: 62px;
+  margin: 0 auto 21px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--white);
+  background: var(--mint);
+  box-shadow: 0 0 0 11px rgba(60, 139, 120, 0.1);
+}
+
+.level-complete-mark svg {
+  width: 27px;
+  height: 27px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.level-complete .eyebrow {
+  justify-content: center;
+}
+
+.level-complete h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(38px, 5vw, 56px);
+  font-weight: 650;
+}
+
+.level-complete-lead {
+  max-width: 590px;
+  margin: 14px auto 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.level-stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 27px;
+}
+
+.level-stat {
+  display: flex;
+  min-height: 72px;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--stat-color);
+  border-radius: 5px;
+  background: var(--paper);
+}
+
+.level-stat span {
+  color: var(--ink-muted);
+  font-size: 9px;
+}
+
+.level-stat strong {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 650;
+}
+
+.level-unlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 21px 0 15px;
+  padding: 12px 14px;
+  border: 1px dashed rgba(60, 139, 120, 0.32);
+  border-radius: 5px;
+  text-align: left;
+}
+
+.level-unlock span {
+  color: var(--ink-muted);
+  font-size: 9px;
+}
+
+.level-unlock strong {
+  font-size: 12px;
+}
+
+.level-complete .primary-button {
+  width: 100%;
+}
+
+.knowledge-summary {
+  margin-top: 12px;
+  padding: 13px 14px;
+  border: 1px solid rgba(215, 155, 62, 0.22);
+  border-radius: 5px;
+  background: rgba(244, 230, 200, 0.45);
+}
+
+.knowledge-summary-copy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.knowledge-summary-copy > div {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.knowledge-summary-copy span,
+.knowledge-summary-copy p {
+  color: var(--ink-muted);
+  font-size: 9px;
+}
+
+.knowledge-summary-copy strong {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 650;
+}
+
+.knowledge-summary-copy p {
+  margin: 0;
+}
+
+.knowledge-summary .metric-track {
+  margin-top: 9px;
+}
+
+.knowledge-summary .metric-fill {
+  background: var(--amber);
+}
+
+@keyframes card-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  30% {
+    transform: translateX(-4px);
+  }
+  65% {
+    transform: translateX(4px);
+  }
+}
+
+@media (max-width: 900px) {
+  .challenge-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .challenge-guide {
+    padding: 23px;
+  }
+
+  .challenge-guide > h2 {
+    font-size: 26px;
+  }
+
+  .guide-note {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 700px) {
+  .level-strip {
+    gap: 6px;
+  }
+
+  .level-step {
+    padding: 8px;
+  }
+
+  .level-step-copy small {
+    display: none;
+  }
+
+  .level-step-copy strong {
+    font-size: 9px;
+  }
+
+  .class-game-panel,
+  .matching-panel {
+    padding: 18px 14px;
+  }
+
+  .microbe-portrait {
+    height: 122px;
+  }
+
+  .microbe-card {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .microbe-card h2 {
+    font-size: 27px;
+  }
+
+  .class-options {
+    gap: 6px;
+  }
+
+  .class-option {
+    min-height: 56px;
+    padding: 8px 5px;
+  }
+
+  .class-option strong {
+    font-size: 9px;
+  }
+
+  .matching-head {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .matching-head h2 {
+    font-size: 23px;
+  }
+
+  .matching-head > p {
+    max-width: none;
+  }
+
+  .matching-board {
+    gap: 7px;
+    padding: 10px;
+  }
+
+  .matching-column h3 {
+    font-size: 9px;
+    line-height: 1.4;
+  }
+
+  .match-card {
+    min-height: 76px;
+    padding: 7px 5px;
+  }
+
+  .match-card strong {
+    font-size: 9px;
+  }
+
+  .match-card small {
+    font-size: 7px;
+  }
+
+  .matching-actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .matching-actions .primary-button {
+    width: 100%;
+  }
+
+  .level-complete {
+    padding: 32px 16px;
+  }
+
+  .level-stat-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .knowledge-summary-copy {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 460px) {
+  .level-step-marker {
+    width: 21px;
+    height: 21px;
+  }
+
+  .level-step {
+    gap: 5px;
+    padding: 6px;
+  }
+
+  .level-step-copy strong {
+    font-size: 8px;
+  }
+
+  .class-option strong {
+    font-size: 8px;
+  }
+}
+
+</style>
+  </head>
+  <body>
+    <svg class="icon-library" aria-hidden="true">
+      <symbol id="icon-activity" viewBox="0 0 24 24">
+        <path d="M3 12h4l2.2-7 4.1 14 2.2-7H21" />
+      </symbol>
+      <symbol id="icon-arrow-right" viewBox="0 0 24 24">
+        <path d="M5 12h14M13 6l6 6-6 6" />
+      </symbol>
+      <symbol id="icon-rotate" viewBox="0 0 24 24">
+        <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+        <path d="M3 3v5h5" />
+      </symbol>
+      <symbol id="icon-leaf" viewBox="0 0 24 24">
+        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 18 2 20 2c0 2 1 4.5-1 8a7 7 0 0 1-8 10Z" />
+        <path d="M2 21c0-3 1.9-5.4 5-6.7" />
+      </symbol>
+      <symbol id="icon-shield" viewBox="0 0 24 24">
+        <path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3v8Z" />
+        <path d="m9 12 2 2 4-4" />
+      </symbol>
+      <symbol id="icon-sparkles" viewBox="0 0 24 24">
+        <path d="m12 3 1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z" />
+        <path d="m19 16 .7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7L19 16Z" />
+      </symbol>
+      <symbol id="icon-chart" viewBox="0 0 24 24">
+        <path d="M3 3v18h18" />
+        <path d="M7 16v-4M12 16V7M17 16v-6" />
+      </symbol>
+      <symbol id="icon-utensils" viewBox="0 0 24 24">
+        <path d="M5 3v7a3 3 0 0 0 6 0V3M8 3v18M19 3c-2 2-3 4-3 7v3h3v8" />
+      </symbol>
+      <symbol id="icon-coffee" viewBox="0 0 24 24">
+        <path d="M4 8h13v6a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6V8Z" />
+        <path d="M17 10h2a3 3 0 0 1 0 6h-2M6 3v2M10 3v2M14 3v2" />
+      </symbol>
+      <symbol id="icon-moon" viewBox="0 0 24 24">
+        <path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z" />
+      </symbol>
+      <symbol id="icon-pill" viewBox="0 0 24 24">
+        <path d="m10.5 20.5-7-7a5 5 0 0 1 7-7l7 7a5 5 0 0 1-7 7Z" />
+        <path d="m7 10 7 7" />
+      </symbol>
+      <symbol id="icon-stethoscope" viewBox="0 0 24 24">
+        <path d="M5 3v5a4 4 0 0 0 8 0V3M3 3h4M11 3h4M9 12v3a5 5 0 0 0 10 0v-2" />
+        <circle cx="19" cy="10" r="2" />
+      </symbol>
+      <symbol id="icon-book" viewBox="0 0 24 24">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13Z" />
+        <path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5" />
+      </symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24">
+        <path d="m5 12 4 4L19 6" />
+      </symbol>
+      <symbol id="icon-copy" viewBox="0 0 24 24">
+        <rect x="8" y="8" width="12" height="12" rx="2" />
+        <path d="M16 8V4H4v12h4" />
+      </symbol>
+      <symbol id="icon-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 11v5M12 8h.01" />
+      </symbol>
+    </svg>
+
+    <div class="page-texture" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <button class="brand" id="brandButton" type="button" aria-label="回到游戏开始页">
+        <span class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><use href="#icon-activity"></use></svg>
+        </span>
+        <span class="brand-copy">
+          <strong>肠道小宇宙</strong>
+          <small>3关生态挑战</small>
+        </span>
+      </button>
+      <div class="header-actions">
+        <span class="science-badge">
+          <span class="science-dot" aria-hidden="true"></span>
+          科普互动体验
+        </span>
+        <button class="text-button" id="restartButton" type="button" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-rotate"></use></svg>
+          重新开始
+        </button>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <section class="screen start-screen is-active" id="startScreen">
+        <div class="start-copy">
+          <p class="eyebrow">
+            <span class="eyebrow-line" aria-hidden="true"></span>
+            三关微观生态实验
+          </p>
+          <h1>给肠道，<br /><span>种一座花园。</span></h1>
+          <p class="start-lead">
+            第一关做生活选择，第二关辨认菌群角色，第三关完成菌群、健康问题与应对方式的三列连线。
+          </p>
+          <div class="start-actions">
+            <button class="primary-button" id="startButton" type="button">
+              开始3关挑战
+              <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+            </button>
+            <p class="start-meta">约6分钟 · 3个关卡 · 3种玩法</p>
+          </div>
+          <div class="start-facts" aria-label="游戏特色">
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-leaf"></use></svg>即时反馈</span>
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-book"></use></svg>科学解释</span>
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-chart"></use></svg>生态报告</span>
+          </div>
+        </div>
+
+        <div class="start-visual" aria-label="插画：肠道花园中的不同微生物">
+          <div class="visual-label">
+            <span>生态观察窗</span>
+            <span class="visual-live"><i aria-hidden="true"></i>模拟中</span>
+          </div>
+          <svg class="garden-art" viewBox="0 0 760 620" role="img" aria-labelledby="gardenTitle gardenDesc">
+            <title id="gardenTitle">肠道微生态花园</title>
+            <desc id="gardenDesc">温暖的肠道路径中生活着形状、颜色各异的微生物。</desc>
+            <defs>
+              <linearGradient id="gardenBg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#f7eee4" />
+                <stop offset=".56" stop-color="#f0e4d6" />
+                <stop offset="1" stop-color="#e7ead8" />
+              </linearGradient>
+              <linearGradient id="gutOuter" x1="0" y1="0" x2="1" y2=".5">
+                <stop offset="0" stop-color="#dd9b86" />
+                <stop offset=".52" stop-color="#efb49e" />
+                <stop offset="1" stop-color="#d88874" />
+              </linearGradient>
+              <linearGradient id="gutInner" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#fff8ef" />
+                <stop offset=".55" stop-color="#ffefe3" />
+                <stop offset="1" stop-color="#f7ded2" />
+              </linearGradient>
+              <pattern id="dotGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1.2" fill="#264f49" opacity=".13" />
+              </pattern>
+            </defs>
+            <rect x="24" y="24" width="712" height="572" rx="8" fill="url(#gardenBg)" />
+            <rect x="24" y="24" width="712" height="572" rx="8" fill="url(#dotGrid)" />
+            <path class="organic-line line-one" d="M-15 505C104 390 198 441 296 521S515 620 794 445" />
+            <path class="organic-line line-two" d="M-16 112C131 180 234 147 330 68S528 10 781 93" />
+            <path class="gut-shadow" d="M60 346C99 180 235 133 350 236S546 419 691 280C738 235 705 131 621 120" />
+            <path class="gut-outer" d="M60 346C99 180 235 133 350 236S546 419 691 280C738 235 705 131 621 120" />
+            <path class="gut-inner" d="M60 346C99 180 235 133 350 236S546 419 691 280C738 235 705 131 621 120" />
+            <path class="gut-shine" d="M93 312C129 197 240 174 332 258S535 385 664 263" />
+            <g class="villi" aria-hidden="true">
+              <path d="m126 218 11-20M164 186l7-22M208 161l3-23M253 146l-2-23M299 153l-8-22M340 178l-12-20M371 217l-17-16M401 263l-20-13M437 305l-21-8M476 341l-20-4M514 369l-14 9M552 383l-4 19M592 377l5 20M632 352l13 18M667 312l19 11M690 271l22 4" />
+            </g>
+            <g class="microbe-cluster microbe-cluster-a">
+              <g transform="translate(206 219) rotate(-9)">
+                <path class="microbe-tail" d="M-15 5-29-2M15 5 29-2" />
+                <rect x="-18" y="-17" width="36" height="34" rx="17" fill="#2d8174" />
+                <circle cx="-6" cy="-2" r="2.5" fill="#f8f2e8" />
+                <circle cx="7" cy="-2" r="2.5" fill="#f8f2e8" />
+                <path d="M-5 8c4 4 8 4 12 0" fill="none" stroke="#f8f2e8" stroke-width="2" stroke-linecap="round" />
+              </g>
+              <g transform="translate(300 181) rotate(17)">
+                <path d="M-10 8-19 19M11 8l9 11" class="microbe-tail" />
+                <rect x="-14" y="-22" width="28" height="44" rx="14" fill="#e49350" />
+                <circle cx="-4" cy="-4" r="2" fill="#fffaf0" />
+                <circle cx="5" cy="-4" r="2" fill="#fffaf0" />
+              </g>
+              <g transform="translate(362 299) rotate(28)">
+                <path class="microbe-tail" d="M-18 0h-12M18 0h12M0-18v-12M0 18v12" />
+                <circle r="17" fill="#5a7996" />
+                <circle cx="-5" cy="-3" r="2.3" fill="#fff" />
+                <circle cx="5" cy="-3" r="2.3" fill="#fff" />
+                <path d="M-5 7c3 3 7 3 10 0" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" />
+              </g>
+              <g transform="translate(503 320) rotate(-18)">
+                <path class="microbe-tail" d="M-13-9-25-16M13-9 25-16" />
+                <path d="M0-23 7-8 23-5 11 6 14 22 0 14-14 22-11 6-23-5-7-8Z" fill="#c67d50" />
+                <circle cx="-5" cy="-2" r="2" fill="#fffaf0" />
+                <circle cx="5" cy="-2" r="2" fill="#fffaf0" />
+              </g>
+              <g transform="translate(613 184) rotate(13)">
+                <path class="microbe-tail" d="M-11 9-21 17M11 9 21 17" />
+                <rect x="-13" y="-20" width="26" height="40" rx="13" fill="#408c86" />
+                <circle cx="-4" cy="-3" r="2" fill="#fff" />
+                <circle cx="5" cy="-3" r="2" fill="#fff" />
+              </g>
+            </g>
+            <g class="microbe-cluster microbe-cluster-b">
+              <g transform="translate(133 315) rotate(23)">
+                <rect x="-9" y="-20" width="18" height="40" rx="9" fill="#dca54d" />
+                <path d="M0-9v18" stroke="#fff4d8" stroke-width="2" opacity=".7" />
+              </g>
+              <g transform="translate(254 361) rotate(-22)">
+                <circle r="11" fill="#8ba05d" />
+                <path d="M-8-1h16M0-9v16" stroke="#f7f1df" stroke-width="1.8" opacity=".8" />
+              </g>
+              <g transform="translate(454 202) rotate(8)">
+                <rect x="-8" y="-16" width="16" height="32" rx="8" fill="#d28264" />
+                <circle cx="0" cy="-3" r="2" fill="#fff9ef" />
+              </g>
+              <g transform="translate(554 390) rotate(-4)">
+                <circle r="12" fill="#607f94" />
+                <path d="M-7 4c4 3 10 3 14 0" fill="none" stroke="#fff" stroke-width="1.6" />
+              </g>
+            </g>
+            <g class="floating-note note-one">
+              <rect x="88" y="90" width="158" height="48" rx="7" />
+              <circle cx="112" cy="114" r="8" />
+              <path d="m108 114 3 3 5-7" />
+              <text x="130" y="118">菌群多样性</text>
+            </g>
+            <g class="floating-note note-two">
+              <rect x="524" y="425" width="154" height="48" rx="7" />
+              <circle cx="548" cy="449" r="8" />
+              <path d="M544 449h8" />
+              <text x="566" y="453">屏障状态</text>
+            </g>
+            <g class="art-caption">
+              <text x="80" y="512">每个人都有自己的微生态</text>
+              <text x="80" y="540" class="art-caption-small">画面为科普示意，不代表真实检测结果</text>
+            </g>
+          </svg>
+          <div class="visual-foot">
+            <span><i class="legend-dot good" aria-hidden="true"></i>有益菌</span>
+            <span><i class="legend-dot diverse" aria-hidden="true"></i>多样菌群</span>
+            <span><i class="legend-dot risk" aria-hidden="true"></i>失衡压力</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen game-screen" id="gameScreen" hidden>
+        <div class="run-header">
+          <div>
+            <p class="eyebrow" id="dayKicker">DAY 01 · 早餐</p>
+            <h1>今天，肠道花园会怎样回应？</h1>
+          </div>
+          <div class="run-progress">
+            <div class="progress-copy">
+              <span>生态观察进度</span>
+              <strong id="progressLabel">1 / 3</strong>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <span id="progressBar"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="level-strip" data-level-strip aria-label="关卡进度"></div>
+
+        <div class="metric-strip" aria-label="游戏内肠道生态指标">
+          <article class="metric-card metric-good" data-metric="good">
+            <div class="metric-heading">
+              <span class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-leaf"></use></svg></span>
+              <span>有益菌活跃</span>
+            </div>
+            <div class="metric-number"><strong data-value>62</strong><span>/100</span></div>
+            <div class="metric-track" role="progressbar" aria-label="有益菌活跃" aria-valuemin="0" aria-valuemax="100" aria-valuenow="62">
+              <span class="metric-fill"></span>
+            </div>
+            <p class="metric-note" data-note>正在建立稳定群落</p>
+          </article>
+          <article class="metric-card metric-diversity" data-metric="diversity">
+            <div class="metric-heading">
+              <span class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-sparkles"></use></svg></span>
+              <span>菌群多样性</span>
+            </div>
+            <div class="metric-number"><strong data-value>54</strong><span>/100</span></div>
+            <div class="metric-track" role="progressbar" aria-label="菌群多样性" aria-valuemin="0" aria-valuemax="100" aria-valuenow="54">
+              <span class="metric-fill"></span>
+            </div>
+            <p class="metric-note" data-note>还可以更丰富</p>
+          </article>
+          <article class="metric-card metric-barrier" data-metric="barrier">
+            <div class="metric-heading">
+              <span class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-shield"></use></svg></span>
+              <span>肠道屏障</span>
+            </div>
+            <div class="metric-number"><strong data-value>60</strong><span>/100</span></div>
+            <div class="metric-track" role="progressbar" aria-label="肠道屏障" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60">
+              <span class="metric-fill"></span>
+            </div>
+            <p class="metric-note" data-note>状态平稳</p>
+          </article>
+          <article class="metric-card metric-risk" data-metric="stress">
+            <div class="metric-heading">
+              <span class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-activity"></use></svg></span>
+              <span>失衡压力</span>
+            </div>
+            <div class="metric-number"><strong data-value>38</strong><span>/100</span></div>
+            <div class="metric-track" role="progressbar" aria-label="失衡压力，数值越低越好" aria-valuemin="0" aria-valuemax="100" aria-valuenow="38">
+              <span class="metric-fill"></span>
+            </div>
+            <p class="metric-note" data-note>压力较低</p>
+          </article>
+        </div>
+
+        <div class="play-layout">
+          <section class="eco-panel" aria-labelledby="ecoHeading">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-kicker">ECOSYSTEM VIEW</p>
+                <h2 id="ecoHeading">菌群花园</h2>
+              </div>
+              <span class="live-tag"><i aria-hidden="true"></i>实时变化</span>
+            </div>
+            <div class="eco-canvas">
+              <svg id="ecoVisual" viewBox="0 0 700 400" role="img" aria-labelledby="ecoVisualTitle">
+                <title id="ecoVisualTitle">动态肠道微生态示意图</title>
+                <defs>
+                  <linearGradient id="ecoGutOuter" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#dfa08b" />
+                    <stop offset=".5" stop-color="#f0b39d" />
+                    <stop offset="1" stop-color="#d78975" />
+                  </linearGradient>
+                  <linearGradient id="ecoGutInner" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#fffaef" />
+                    <stop offset=".62" stop-color="#fff1e4" />
+                    <stop offset="1" stop-color="#f8dfd1" />
+                  </linearGradient>
+                  <pattern id="ecoDots" width="28" height="28" patternUnits="userSpaceOnUse">
+                    <circle cx="2" cy="2" r="1" fill="#294f49" opacity=".13" />
+                  </pattern>
+                </defs>
+                <rect width="700" height="400" rx="6" fill="#f5ede3" />
+                <rect width="700" height="400" rx="6" fill="url(#ecoDots)" />
+                <path class="eco-wash" d="M-20 350C110 278 194 336 282 388S505 449 722 321" />
+                <path
+                  class="eco-gut-shadow"
+                  d="M48 235C94 112 207 92 311 172S475 335 611 246C663 213 651 114 572 104"
+                />
+                <path
+                  class="eco-gut-outer"
+                  d="M48 235C94 112 207 92 311 172S475 335 611 246C663 213 651 114 572 104"
+                />
+                <path
+                  class="eco-gut-inner"
+                  d="M48 235C94 112 207 92 311 172S475 335 611 246C663 213 651 114 572 104"
+                />
+                <path
+                  class="eco-gut-highlight"
+                  d="M80 210C119 133 222 119 297 182S444 307 579 231"
+                />
+                <g id="barrierLayer" class="barrier-layer" aria-hidden="true"></g>
+                <g id="goodMicrobeLayer" class="microbe-layer good-layer" aria-hidden="true"></g>
+                <g id="diverseMicrobeLayer" class="microbe-layer diverse-layer" aria-hidden="true"></g>
+                <g id="riskMicrobeLayer" class="microbe-layer risk-layer" aria-hidden="true"></g>
+              </svg>
+            </div>
+            <div class="eco-footer">
+              <div class="eco-status">
+                <span class="eco-status-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-sparkles"></use></svg></span>
+                <div>
+                  <span>游戏内生态状态</span>
+                  <strong id="ecoStatus">群落正在适应今天的选择</strong>
+                </div>
+              </div>
+              <p>画面为科普比喻，不代表真实菌群检测。</p>
+            </div>
+          </section>
+
+          <section class="scenario-panel" aria-labelledby="scenarioTitle">
+            <div class="scenario-copy">
+              <div class="scenario-kicker">
+                <span id="scenarioNumber">01</span>
+                <span id="scenarioTag">早餐选择</span>
+              </div>
+              <h2 id="scenarioTitle">赶时间的早晨</h2>
+              <p id="scenarioNarrative">
+                早高峰只剩十分钟。你路过早餐店，准备给肠道花园“投喂”今天的第一餐。
+              </p>
+              <p class="scenario-question" id="scenarioQuestion">今天的第一口，你会怎么选？</p>
+            </div>
+
+            <div class="choice-list" id="choiceList" aria-label="今日选择"></div>
+
+            <div class="feedback-panel" id="feedbackPanel" hidden>
+              <div class="feedback-heading">
+                <span class="feedback-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-book"></use></svg>
+                </span>
+                <div>
+                  <p>肠道小知识</p>
+                  <h3 id="feedbackTitle"></h3>
+                </div>
+              </div>
+              <p class="feedback-body" id="feedbackBody"></p>
+              <div class="effect-list" id="effectList" aria-label="本日指标变化"></div>
+              <div class="science-footnote" id="scienceFootnote"></div>
+              <button class="primary-button next-button" id="nextButton" type="button">
+                <span id="nextButtonText">进入第2天</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+              </button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen challenge-screen" id="classificationScreen" hidden>
+        <div class="run-header">
+          <div>
+            <p class="eyebrow">第二关 · 菌群分类</p>
+            <h1>它们，真的只有“好”和“坏”吗？</h1>
+          </div>
+          <div class="run-progress">
+            <div class="progress-copy">
+              <span>分类挑战进度</span>
+              <strong id="classProgressLabel">1 / 5</strong>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <span id="classProgressBar"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-layout">
+          <aside class="challenge-guide" aria-labelledby="classGuideTitle">
+            <p class="panel-kicker">HOW TO THINK</p>
+            <h2 id="classGuideTitle">先别急着贴标签</h2>
+            <p>
+              同一种微生物的作用，会受到菌株、数量、所在位置和人体状态影响。这里的三个分类是游戏化简化，不是医学检验结果。
+            </p>
+            <p class="guide-note">
+              答题后都会给出解释。重点是理解菌株、数量、位置与人体状态带来的差异，而不是记住绝对好坏。
+            </p>
+          </aside>
+
+          <section class="class-game-panel" aria-labelledby="classMicrobeName">
+            <div class="microbe-card">
+              <div class="microbe-portrait" id="microbePortrait" aria-hidden="true">
+                <svg viewBox="0 0 220 150">
+                  <path class="portrait-line" d="M10 120C50 70 82 105 111 52S170 24 210 61" />
+                  <g transform="translate(110 74)">
+                    <path class="portrait-tail" d="M-38 5h-25M38 5h25M0-37v-18M0 44v16" />
+                    <circle r="36" />
+                    <circle cx="-12" cy="-5" r="4.5" fill="#fffaf0" />
+                    <circle cx="12" cy="-5" r="4.5" fill="#fffaf0" />
+                    <path class="portrait-smile" d="M-11 14c7 7 15 7 22 0" />
+                  </g>
+                </svg>
+              </div>
+              <p class="card-counter" id="classificationCounter">菌群卡 01</p>
+              <h2 id="classMicrobeName">双歧杆菌</h2>
+              <p class="microbe-latin" id="classMicrobeLatin">Bifidobacterium</p>
+              <p class="microbe-hint" id="classMicrobeHint"></p>
+            </div>
+
+            <div class="class-options" id="classOptions" aria-label="选择菌群分类">
+              <button class="class-option option-beneficial" type="button" data-category="beneficial">
+                <strong>有益 / 互助型</strong>
+              </button>
+              <button class="class-option option-neutral" type="button" data-category="neutral">
+                <strong>中性 / 情境相关</strong>
+              </button>
+              <button class="class-option option-risk" type="button" data-category="risk">
+                <strong>需警惕 / 机会型</strong>
+              </button>
+            </div>
+
+            <div class="challenge-feedback" id="classFeedback" hidden>
+              <div class="feedback-verdict">
+                <span id="classVerdict">回答正确</span>
+                <strong id="classAnswerLabel"></strong>
+              </div>
+              <h3 id="classFeedbackTitle"></h3>
+              <p id="classFeedbackBody"></p>
+              <div class="knowledge-note" id="classKnowledgeNote"></div>
+              <button class="primary-button challenge-next" id="classNextButton" type="button">
+                <span id="classNextText">下一张菌群卡</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+              </button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen challenge-screen" id="matchingScreen" hidden>
+        <div class="run-header">
+          <div>
+            <p class="eyebrow">第三关 · 三列连线</p>
+            <h1>把菌群、健康问题与合理应对连起来</h1>
+          </div>
+          <div class="run-progress">
+            <div class="progress-copy">
+              <span>已连对</span>
+              <strong id="matchingProgressLabel">0 / 3</strong>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <span id="matchingProgressBar"></span>
+            </div>
+          </div>
+        </div>
+
+        <section class="matching-panel" aria-labelledby="matchingBoardTitle">
+          <div class="matching-head">
+            <div>
+              <p class="panel-kicker">EVIDENCE MATCH</p>
+              <h2 id="matchingBoardTitle">选择三张卡，组成一条有证据的连线</h2>
+            </div>
+            <p>这些配对只覆盖有明确临床关联的简化情境，不代表所有菌群与疾病都存在一对一关系。</p>
+          </div>
+
+          <div class="matching-board" id="matchingBoard">
+            <svg class="matching-lines" id="matchingLines" aria-hidden="true"></svg>
+            <div class="matching-column">
+              <h3>菌群 / 微生物</h3>
+              <div class="match-stack" id="matchMicrobes"></div>
+            </div>
+            <div class="matching-column">
+              <h3>健康问题</h3>
+              <div class="match-stack" id="matchConditions"></div>
+            </div>
+            <div class="matching-column">
+              <h3>合理应对</h3>
+              <div class="match-stack" id="matchTreatments"></div>
+            </div>
+          </div>
+
+          <div class="matching-actions">
+            <p id="matchingInstruction">从每一列各选一张卡，然后检查它们是否属于同一组。</p>
+            <button class="primary-button" id="checkMatchingButton" type="button" disabled>
+              检查连线
+              <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+            </button>
+          </div>
+
+          <div class="challenge-feedback matching-feedback" id="matchingFeedback" hidden>
+            <div class="feedback-verdict">
+              <span id="matchingVerdict">连线正确</span>
+              <strong id="matchingAnswerLabel"></strong>
+            </div>
+            <h3 id="matchingFeedbackTitle"></h3>
+            <p id="matchingFeedbackBody"></p>
+            <div class="knowledge-note" id="matchingKnowledgeNote"></div>
+            <button class="primary-button challenge-next" id="matchingNextButton" type="button">
+              <span id="matchingNextText">继续下一组</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+            </button>
+          </div>
+        </section>
+      </section>
+
+      <section class="screen level-screen" id="levelScreen" hidden>
+        <div class="level-complete">
+          <div class="level-complete-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><use href="#icon-sparkles"></use></svg>
+          </div>
+          <p class="eyebrow">
+            <span class="eyebrow-line" aria-hidden="true"></span>
+            <span id="levelCompleteKicker">第一关完成</span>
+          </p>
+          <h1 id="levelCompleteTitle">日常选择</h1>
+          <p class="level-complete-lead" id="levelCompleteSummary"></p>
+          <div class="level-stat-row" id="levelStatRow" aria-label="本关结束时的生态指标"></div>
+          <div class="level-unlock">
+            <span>下一关</span>
+            <strong id="nextLevelName">吃出多样性</strong>
+          </div>
+          <button class="primary-button" id="continueLevelButton" type="button">
+            <span id="continueLevelText">进入第二关</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="screen result-screen" id="resultScreen" hidden>
+        <div class="result-head">
+          <div class="result-copy">
+            <p class="eyebrow">
+              <span class="eyebrow-line" aria-hidden="true"></span>
+              三关微生态观察报告
+            </p>
+            <h1 id="resultTitle">恢复中的花园</h1>
+            <p id="resultSummary"></p>
+            <div class="result-actions">
+              <button class="primary-button" id="playAgainButton" type="button">
+                再玩一次
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-rotate"></use></svg>
+              </button>
+              <button class="secondary-button" id="copyButton" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-copy"></use></svg>
+                复制报告
+              </button>
+            </div>
+          </div>
+          <div class="score-display" aria-label="游戏内综合得分">
+            <svg viewBox="0 0 140 140" aria-hidden="true">
+              <circle class="score-track" cx="70" cy="70" r="56" />
+              <circle class="score-progress" id="scoreRing" cx="70" cy="70" r="56" />
+            </svg>
+            <div class="score-value">
+              <strong id="scoreValue">68</strong>
+              <span>游戏内综合得分</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-grid">
+          <section class="report-panel" aria-labelledby="metricsReportTitle">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-kicker">ECOSYSTEM TRACE</p>
+                <h2 id="metricsReportTitle">生态轨迹</h2>
+              </div>
+              <span class="best-score" id="bestScore"></span>
+            </div>
+            <div class="report-metrics" id="reportMetrics"></div>
+            <div class="knowledge-summary" id="knowledgeSummary"></div>
+            <div class="history-list" id="historyList" aria-label="九日选择记录"></div>
+          </section>
+
+          <section class="report-panel report-tips" aria-labelledby="tipsTitle">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-kicker">NEXT SMALL STEP</p>
+                <h2 id="tipsTitle">下一步小行动</h2>
+              </div>
+              <span class="tip-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><use href="#icon-leaf"></use></svg>
+              </span>
+            </div>
+            <ul id="tipList"></ul>
+            <div class="report-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-info"></use></svg>
+              <p>游戏内分数只用于呈现选择带来的变化，不是健康评估或疾病风险判断。</p>
+            </div>
+            <details class="source-details">
+              <summary>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-book"></use></svg>
+                科学依据与说明
+              </summary>
+              <p>
+                内容参考《中国居民膳食指南（2022）》、世界卫生组织抗菌药物耐药科普以及国际益生菌与益生元科学协会（ISAPP）关于益生菌的共识。游戏对复杂研究进行了简化，不能替代医生建议。
+              </p>
+            </details>
+          </section>
+        </div>
+
+        <p class="disclaimer">
+          本游戏仅用于健康科普，不提供诊断或治疗建议。持续不适、发热或症状加重时，请及时就医。
+        </p>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script>
+const initialMetrics = {
+  good: 62,
+  diversity: 54,
+  barrier: 60,
+  stress: 38,
+};
+
+const metricMeta = {
+  good: { label: "有益菌活跃", color: "#3c8b78", prefer: "high" },
+  diversity: { label: "菌群多样性", color: "#d79b3e", prefer: "high" },
+  barrier: { label: "肠道屏障", color: "#597e96", prefer: "high" },
+  stress: { label: "失衡压力", color: "#c7654d", prefer: "low" },
+};
+
+const scenarios = [
+  {
+    day: "DAY 01",
+    category: "早餐",
+    tag: "早餐选择",
+    title: "赶时间的早晨",
+    narrative:
+      "早高峰只剩十分钟。你路过早餐店，准备给肠道花园“投喂”今天的第一餐。",
+    question: "今天的第一口，你会怎么选？",
+    choices: [
+      {
+        icon: "leaf",
+        title: "燕麦酸奶杯 + 一小把坚果",
+        note: "兼顾全谷物、发酵食物和坚果",
+        effects: { good: 12, diversity: 10, barrier: 5, stress: -4 },
+        feedbackTitle: "多样食物，比单一“补品”更重要",
+        feedback:
+          "燕麦等全谷物可以提供膳食纤维；酸奶属于发酵食物，坚果则增加食物种类。它们可以成为多样饮食的一部分，但没有哪一种食物能单独决定菌群好坏。",
+        footnote: "饮食对菌群的影响与长期习惯关系更大，单次选择只是游戏中的简化呈现。",
+      },
+      {
+        icon: "utensils",
+        title: "油条 + 甜豆浆",
+        note: "快速、熟悉，也能补充能量",
+        effects: { good: -6, diversity: -4, barrier: -2, stress: 9 },
+        feedbackTitle: "偶尔吃一次，不会决定整个生态",
+        feedback:
+          "油条和甜豆浆可以提供能量，但这一餐的膳食纤维和食物种类较少。真正值得关注的是经常吃什么，而不是把某一顿饭当成“好”或“坏”的标签。",
+        footnote: "均衡饮食看整体模式，不需要因为一次选择产生饮食焦虑。",
+      },
+      {
+        icon: "coffee",
+        title: "只喝一杯咖啡就走",
+        note: "先赶路，早餐之后再说",
+        effects: { good: -4, diversity: -5, barrier: -5, stress: 7 },
+        feedbackTitle: "规律吃饭，也是在照顾生态节律",
+        feedback:
+          "如果经常跳过早餐，可能更难从全天饮食中获得足够的能量、蛋白质和膳食纤维。咖啡不是问题，关键是有没有为身体补上需要的食物。",
+        footnote: "如果早晨不饿，可以从少量、易接受的食物开始，找到适合自己的规律。",
+      },
+    ],
+  },
+  {
+    day: "DAY 02",
+    category: "夜宵",
+    tag: "睡眠与饮食",
+    title: "夜宵时刻",
+    narrative:
+      "项目刚结束，已经晚上十一点。你有点饿，也有点想用一顿重口味夜宵犒劳自己。",
+    question: "今晚，你更想怎么安排？",
+    choices: [
+      {
+        icon: "moon",
+        title: "少量杂粮粥，吃完早些休息",
+        note: "照顾饥饿感，也给睡眠留出时间",
+        effects: { good: 5, diversity: 3, barrier: 4, stress: -3 },
+        feedbackTitle: "夜宵的重点是“适量”和“不影响睡眠”",
+        feedback:
+          "如果确实饥饿，少量、温和、不过量的食物通常比硬扛更可持续。同时，固定作息与充足睡眠，是支持身心状态的重要基础。",
+        footnote: "夜间进食与睡眠的关系因人而异；如果经常反酸、胃胀或失眠，建议咨询专业人员。",
+      },
+      {
+        icon: "utensils",
+        title: "烧烤配冰啤，彻底放松",
+        note: "今天很累，想吃点痛快的",
+        effects: { good: -4, diversity: -3, barrier: -8, stress: 13 },
+        feedbackTitle: "偶尔聚餐不等于生态崩盘",
+        feedback:
+          "高油、高盐和酒精的频繁组合，可能让夜间消化和睡眠更不舒服。偶尔一次不必自责，但可以在第二天回到更规律的饮食和作息。",
+        footnote: "酒精与高脂饮食并非人人反应相同，重要的是观察自己的感受和频率。",
+      },
+      {
+        icon: "coffee",
+        title: "饿着睡，明天再补回来",
+        note: "省事，也避免夜里进食",
+        effects: { good: -1, diversity: -2, barrier: -2, stress: 4 },
+        feedbackTitle: "补偿式饮食很难完全“补回来”",
+        feedback:
+          "如果饥饿影响入睡，完全不吃未必是更好的选择。与其依靠第二天补偿，不如尽量让每天的饮食和作息保持稳定。",
+        footnote: "游戏只在呈现一般规律，不针对任何个体的胃肠状况。",
+      },
+    ],
+  },
+  {
+    day: "DAY 03",
+    category: "用药",
+    tag: "合理用药",
+    title: "药箱里的选择",
+    narrative:
+      "你喉咙有点痛，还有些鼻塞。打开药箱时，你发现上次剩下的抗生素还放在里面。",
+    question: "面对这盒剩药，你会怎么做？",
+    choices: [
+      {
+        icon: "pill",
+        title: "按上次经验先吃抗生素",
+        note: "希望症状能快点好",
+        effects: { good: -10, diversity: -13, barrier: -6, stress: 18 },
+        feedbackTitle: "抗生素不是“感冒药”",
+        feedback:
+          "抗生素只针对细菌感染，对普通病毒性感冒没有治疗作用。自行使用剩余抗生素既可能无效，也可能带来不良反应和耐药风险。",
+        footnote: "抗生素应在医生评估后使用；如果医生开具，请按要求完成疗程，不要自行停药或分享给他人。",
+      },
+      {
+        icon: "stethoscope",
+        title: "先休息补水，加重时就医",
+        note: "观察症状，必要时寻求专业帮助",
+        effects: { good: 2, diversity: 1, barrier: 6, stress: -4 },
+        feedbackTitle: "合理用药的第一步，是判断需不需要用药",
+        feedback:
+          "普通感冒多以休息、补水和症状管理为主。若高热不退、呼吸困难、症状明显加重或持续不缓解，应及时就医，由专业人员判断是否需要药物。",
+        footnote: "如果本身有基础疾病、免疫功能低下，或属于婴幼儿、孕产妇等特殊人群，应更早咨询医生。",
+      },
+      {
+        icon: "sparkles",
+        title: "吃点益生菌，应该不用就医",
+        note: "想用“补菌”代替看医生",
+        effects: { good: 4, diversity: 2, barrier: 0, stress: 3 },
+        feedbackTitle: "益生菌不能替代治疗或就医",
+        feedback:
+          "不同益生菌产品的作用并不相同，也不适合被当作急性感染的治疗手段。是否使用、使用哪种，需要结合具体情况并咨询专业人员。",
+        footnote: "免疫低下人群、危重症患者等使用益生菌需要格外谨慎，不应自行决定。",
+      },
+    ],
+  },
+];
+
+const levels = [
+  {
+    shortTitle: "日常选择",
+    name: "第一关 · 日常选择",
+    nextName: "菌群分类挑战",
+    completeSummary:
+      "你完成了饮食、作息与用药情境中的三个选择。生态指标已经记录，接下来看看能不能更准确地认识这些微生物。",
+  },
+  {
+    shortTitle: "菌群分类",
+    name: "第二关 · 菌群分类",
+    nextName: "三列证据连线",
+    completeSummary:
+      "你完成了菌群角色分类。微生物不是非黑即白，菌株、数量、位置和人体状态共同决定它们在特定情境中的意义。",
+  },
+  {
+    shortTitle: "三列连线",
+    name: "第三关 · 三列连线",
+    nextName: "最终观察报告",
+    completeSummary:
+      "你完成了菌群、健康问题与合理应对的连线。三关已经结束，现在查看综合报告。",
+  },
+];
+
+const categoryLabels = {
+  beneficial: "有益 / 互助型",
+  neutral: "中性 / 情境相关",
+  risk: "需警惕 / 机会型",
+};
+
+const classificationItems = [
+  {
+    name: "双歧杆菌",
+    latin: "Bifidobacterium",
+    answer: "beneficial",
+    hint: "常见于婴幼儿肠道，也被用于部分益生菌产品。",
+    title: "常见的共生菌，但功效要看菌株",
+    explanation:
+      "双歧杆菌是人体肠道常见的共生菌，部分菌株参与发酵碳水化合物，也被用于特定益生菌产品。不同菌株的作用并不相同，不能把“双歧杆菌”四个字等同于一种万能功效。",
+    note: "分类题的“有益”是游戏化标签；实际健康作用取决于具体菌株、剂量和人群。",
+  },
+  {
+    name: "拟杆菌属",
+    latin: "Bacteroides",
+    answer: "neutral",
+    hint: "肠道常驻菌，参与分解复杂碳水化合物。",
+    title: "常驻并不等于永远无害，也不等于有害",
+    explanation:
+      "拟杆菌属是肠道中常见的一类共生菌，部分成员能帮助分解复杂碳水化合物。但在肠道屏障受损、菌群严重失衡或进入其他部位时，它们也可能成为机会性病原。",
+    note: "同一个微生物在不同位置和不同人体状态下，角色可能发生变化。",
+  },
+  {
+    name: "艰难梭菌",
+    latin: "Clostridioides difficile",
+    answer: "risk",
+    hint: "抗生素使用后生态失衡时值得重点关注。",
+    title: "可能无症状携带，也可能引起严重腹泻",
+    explanation:
+      "艰难梭菌可以在部分人肠道中无症状存在，但在抗生素打乱菌群后，产毒菌株可能大量繁殖并引起腹泻或结肠炎。它不是“碰见就一定生病”，却是临床上需要警惕的机会性病原。",
+    note: "疑似艰难梭菌感染需要专业检测和评估，不能靠自行补充益生菌代替治疗。",
+  },
+  {
+    name: "乳酸杆菌",
+    latin: "Lactobacillus",
+    answer: "beneficial",
+    hint: "许多菌株参与发酵，也常见于发酵食品和益生菌。",
+    title: "多数菌株是好朋友，但“乳酸杆菌”不是单一身份",
+    explanation:
+      "许多乳酸杆菌菌株参与糖类发酵，是发酵食品和部分益生菌中的常见成员。它们的作用高度依赖具体菌株。对免疫严重低下等人群，使用活菌产品还需要专业评估。",
+    note: "看益生菌产品时，菌株和证据比只看“菌种大类”更重要。",
+  },
+  {
+    name: "大肠杆菌",
+    latin: "Escherichia coli",
+    answer: "neutral",
+    hint: "同一个物种里，既有常驻成员，也有致病型。",
+    title: "一个物种，可以有完全不同的菌株",
+    explanation:
+      "多数大肠杆菌是人体肠道中的常驻成员，但某些致病型可以引起腹泻等疾病。不能只凭“大肠杆菌”这个名字判断它一定有益或一定有害，需要结合菌株、毒力基因和感染部位。",
+    note: "这也是游戏分类必须看语境的典型例子。",
+  },
+];
+
+const matchingPairs = [
+  {
+    id: "hp",
+    microbe: "幽门螺杆菌",
+    microbeDetail: "Helicobacter pylori",
+    condition: "胃溃疡 / 慢性胃炎相关",
+    treatment: "由医生评估是否需要根除治疗",
+    title: "幽门螺杆菌与胃部疾病相关，但不是人人需要治疗",
+    explanation:
+      "幽门螺杆菌可在胃内定植，与慢性胃炎、胃溃疡及部分胃癌风险相关。是否检测和治疗，要结合症状、病史、年龄和风险因素，由医生判断。",
+    note: "不要自行组合抗生素“根除”；不规范用药会增加耐药和失败风险。",
+    wrongFeedback:
+      "幽门螺杆菌感染很常见，也可能没有症状。是否需要治疗不是根据“查出菌”三个字自动决定，而要看具体风险和医生评估。",
+  },
+  {
+    id: "cdiff",
+    microbe: "艰难梭菌",
+    microbeDetail: "Clostridioides difficile",
+    condition: "抗生素相关腹泻 / 结肠炎",
+    treatment: "停用不必要抗生素并遵医嘱治疗",
+    title: "艰难梭菌常与抗生素后的生态失衡有关",
+    explanation:
+      "使用抗生素可能打乱正常肠道菌群，使艰难梭菌更容易繁殖并产生毒素。轻症到重症的处理不同，需要检测和医生评估，不能只靠止泻药或益生菌自行处理。",
+    note: "出现高热、剧烈腹痛、明显脱水或血便时，应尽快就医。",
+    wrongFeedback:
+      "艰难梭菌不是普通“吃坏肚子”。当抗生素使用后出现持续腹泻，尤其伴随发热或腹痛时，需要专业检测和评估。",
+  },
+  {
+    id: "probiotic",
+    microbe: "特定益生菌菌株",
+    microbeDetail: "Selected probiotic strains",
+    condition: "部分抗生素相关腹泻风险",
+    treatment: "在专业人员指导下选择有证据的菌株",
+    title: "益生菌不是一种产品，也不是通用疗法",
+    explanation:
+      "部分特定益生菌菌株在特定人群和场景中与较低抗生素相关腹泻风险相关，但效果不能从一个菌株外推到所有产品。是否使用要结合证据、人群和安全性。",
+    note: "免疫严重低下、危重症或留置中心静脉导管等人群，不应自行使用活菌产品。",
+    wrongFeedback:
+      "益生菌并不是“细菌越多越好”。不同菌株、剂量和人群的证据不同，也不能替代针对疾病的规范治疗。",
+  },
+];
+
+const state = {
+  metrics: { ...initialMetrics },
+  dayIndex: 0,
+  levelIndex: 0,
+  answered: false,
+  history: [],
+  classificationIndex: 0,
+  classificationAnswered: false,
+  classificationCorrect: 0,
+  knowledge: { correct: 0, total: 0 },
+  matchingSolved: [],
+  matchingSelection: { microbe: null, condition: null, treatment: null },
+  matchingFeedbackMode: null,
+  screen: "start",
+};
+
+const dom = {
+  startScreen: document.querySelector("#startScreen"),
+  gameScreen: document.querySelector("#gameScreen"),
+  classificationScreen: document.querySelector("#classificationScreen"),
+  matchingScreen: document.querySelector("#matchingScreen"),
+  levelScreen: document.querySelector("#levelScreen"),
+  resultScreen: document.querySelector("#resultScreen"),
+  startButton: document.querySelector("#startButton"),
+  restartButton: document.querySelector("#restartButton"),
+  brandButton: document.querySelector("#brandButton"),
+  dayKicker: document.querySelector("#dayKicker"),
+  progressLabel: document.querySelector("#progressLabel"),
+  progressBar: document.querySelector("#progressBar"),
+  classProgressLabel: document.querySelector("#classProgressLabel"),
+  classProgressBar: document.querySelector("#classProgressBar"),
+  classificationCounter: document.querySelector("#classificationCounter"),
+  classMicrobeName: document.querySelector("#classMicrobeName"),
+  classMicrobeLatin: document.querySelector("#classMicrobeLatin"),
+  classMicrobeHint: document.querySelector("#classMicrobeHint"),
+  microbePortrait: document.querySelector("#microbePortrait"),
+  classOptions: [...document.querySelectorAll(".class-option")],
+  classFeedback: document.querySelector("#classFeedback"),
+  classVerdict: document.querySelector("#classVerdict"),
+  classAnswerLabel: document.querySelector("#classAnswerLabel"),
+  classFeedbackTitle: document.querySelector("#classFeedbackTitle"),
+  classFeedbackBody: document.querySelector("#classFeedbackBody"),
+  classKnowledgeNote: document.querySelector("#classKnowledgeNote"),
+  classNextButton: document.querySelector("#classNextButton"),
+  classNextText: document.querySelector("#classNextText"),
+  matchingProgressLabel: document.querySelector("#matchingProgressLabel"),
+  matchingProgressBar: document.querySelector("#matchingProgressBar"),
+  matchingBoard: document.querySelector("#matchingBoard"),
+  matchingLines: document.querySelector("#matchingLines"),
+  matchMicrobes: document.querySelector("#matchMicrobes"),
+  matchConditions: document.querySelector("#matchConditions"),
+  matchTreatments: document.querySelector("#matchTreatments"),
+  checkMatchingButton: document.querySelector("#checkMatchingButton"),
+  matchingInstruction: document.querySelector("#matchingInstruction"),
+  matchingFeedback: document.querySelector("#matchingFeedback"),
+  matchingVerdict: document.querySelector("#matchingVerdict"),
+  matchingAnswerLabel: document.querySelector("#matchingAnswerLabel"),
+  matchingFeedbackTitle: document.querySelector("#matchingFeedbackTitle"),
+  matchingFeedbackBody: document.querySelector("#matchingFeedbackBody"),
+  matchingKnowledgeNote: document.querySelector("#matchingKnowledgeNote"),
+  matchingNextButton: document.querySelector("#matchingNextButton"),
+  matchingNextText: document.querySelector("#matchingNextText"),
+  scenarioNumber: document.querySelector("#scenarioNumber"),
+  scenarioTag: document.querySelector("#scenarioTag"),
+  scenarioTitle: document.querySelector("#scenarioTitle"),
+  scenarioNarrative: document.querySelector("#scenarioNarrative"),
+  scenarioQuestion: document.querySelector("#scenarioQuestion"),
+  choiceList: document.querySelector("#choiceList"),
+  feedbackPanel: document.querySelector("#feedbackPanel"),
+  feedbackTitle: document.querySelector("#feedbackTitle"),
+  feedbackBody: document.querySelector("#feedbackBody"),
+  effectList: document.querySelector("#effectList"),
+  scienceFootnote: document.querySelector("#scienceFootnote"),
+  nextButton: document.querySelector("#nextButton"),
+  nextButtonText: document.querySelector("#nextButtonText"),
+  ecoStatus: document.querySelector("#ecoStatus"),
+  goodLayer: document.querySelector("#goodMicrobeLayer"),
+  diverseLayer: document.querySelector("#diverseMicrobeLayer"),
+  riskLayer: document.querySelector("#riskMicrobeLayer"),
+  barrierLayer: document.querySelector("#barrierLayer"),
+  resultTitle: document.querySelector("#resultTitle"),
+  resultSummary: document.querySelector("#resultSummary"),
+  scoreValue: document.querySelector("#scoreValue"),
+  scoreRing: document.querySelector("#scoreRing"),
+  bestScore: document.querySelector("#bestScore"),
+  reportMetrics: document.querySelector("#reportMetrics"),
+  knowledgeSummary: document.querySelector("#knowledgeSummary"),
+  historyList: document.querySelector("#historyList"),
+  tipList: document.querySelector("#tipList"),
+  playAgainButton: document.querySelector("#playAgainButton"),
+  copyButton: document.querySelector("#copyButton"),
+  levelCompleteKicker: document.querySelector("#levelCompleteKicker"),
+  levelCompleteTitle: document.querySelector("#levelCompleteTitle"),
+  levelCompleteSummary: document.querySelector("#levelCompleteSummary"),
+  levelStatRow: document.querySelector("#levelStatRow"),
+  nextLevelName: document.querySelector("#nextLevelName"),
+  continueLevelButton: document.querySelector("#continueLevelButton"),
+  continueLevelText: document.querySelector("#continueLevelText"),
+  toast: document.querySelector("#toast"),
+};
+
+let toastTimer;
+
+function icon(name, className = "") {
+  return `<svg class="${className}" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-${name}"></use></svg>`;
+}
+
+function clamp(value) {
+  return Math.max(0, Math.min(100, value));
+}
+
+function renderLevelStrips() {
+  document.querySelectorAll("[data-level-strip]").forEach((container) => {
+    container.innerHTML = levels
+      .map((level, index) => {
+        const status =
+          index < state.levelIndex ? "is-complete" : index === state.levelIndex ? "is-current" : "is-upcoming";
+        const marker =
+          index < state.levelIndex ? icon("check") : String(index + 1).padStart(2, "0");
+        return `
+          <div class="level-step ${status}">
+            <span class="level-step-marker">${marker}</span>
+            <span class="level-step-copy">
+              <small>第${index + 1}关</small>
+              <strong>${level.shortTitle}</strong>
+            </span>
+          </div>
+        `;
+      })
+      .join("");
+  });
+}
+
+function showScreen(name) {
+  state.screen = name;
+  [
+    dom.startScreen,
+    dom.gameScreen,
+    dom.classificationScreen,
+    dom.matchingScreen,
+    dom.levelScreen,
+    dom.resultScreen,
+  ].forEach((screen) => {
+    screen.classList.remove("is-active");
+    screen.hidden = true;
+  });
+
+  const screen = dom[`${name}Screen`];
+  screen.hidden = false;
+  screen.classList.add("is-active");
+  dom.restartButton.hidden = name === "start";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function resetGame() {
+  state.metrics = { ...initialMetrics };
+  state.dayIndex = 0;
+  state.levelIndex = 0;
+  state.answered = false;
+  state.history = [];
+  state.classificationIndex = 0;
+  state.classificationAnswered = false;
+  state.classificationCorrect = 0;
+  state.knowledge = { correct: 0, total: 0 };
+  state.matchingSolved = [];
+  state.matchingSelection = { microbe: null, condition: null, treatment: null };
+  state.matchingFeedbackMode = null;
+}
+
+function startGame() {
+  resetGame();
+  showScreen("game");
+  renderDay();
+}
+
+function renderDay() {
+  const scenario = scenarios[state.dayIndex];
+  state.answered = false;
+
+  state.levelIndex = 0;
+  dom.dayKicker.textContent = `第一关 · ${scenario.day} · ${scenario.category}`;
+  dom.progressLabel.textContent = `${state.dayIndex + 1} / ${scenarios.length}`;
+  dom.progressBar.style.width = `${((state.dayIndex + 1) / scenarios.length) * 100}%`;
+  renderLevelStrips();
+  dom.scenarioNumber.textContent = String(state.dayIndex + 1).padStart(2, "0");
+  dom.scenarioTag.textContent = scenario.tag;
+  dom.scenarioTitle.textContent = scenario.title;
+  dom.scenarioNarrative.textContent = scenario.narrative;
+  dom.scenarioQuestion.textContent = scenario.question;
+  dom.feedbackPanel.hidden = true;
+  dom.choiceList.innerHTML = "";
+
+  scenario.choices.forEach((choice, index) => {
+    const button = document.createElement("button");
+    button.className = "choice-button";
+    button.type = "button";
+    button.dataset.choice = String(index);
+    button.innerHTML = `
+      <span class="choice-icon">${icon(choice.icon)}</span>
+      <span class="choice-copy">
+        <strong>${choice.title}</strong>
+        <small>${choice.note}</small>
+      </span>
+      ${icon("arrow-right", "choice-arrow")}
+    `;
+    button.addEventListener("click", () => chooseOption(index, button));
+    dom.choiceList.append(button);
+  });
+
+  renderMetrics();
+  renderEcosystem();
+}
+
+function chooseOption(index, selectedButton) {
+  if (state.answered) return;
+  state.answered = true;
+
+  const scenario = scenarios[state.dayIndex];
+  const choice = scenario.choices[index];
+  const allButtons = [...dom.choiceList.querySelectorAll(".choice-button")];
+
+  allButtons.forEach((button) => {
+    button.disabled = true;
+    if (button === selectedButton) {
+      button.classList.add("is-selected");
+    } else {
+      button.classList.add("is-muted");
+    }
+  });
+
+  Object.entries(choice.effects).forEach(([key, value]) => {
+    state.metrics[key] = clamp(state.metrics[key] + value);
+  });
+
+  state.history.push({
+    day: `${state.dayIndex + 1}`.padStart(2, "0"),
+    title: choice.title,
+    tag: scenario.tag,
+    choiceIndex: index,
+  });
+
+  renderMetrics(choice.effects);
+  renderEcosystem();
+  renderFeedback(choice);
+}
+
+function renderFeedback(choice) {
+  dom.feedbackTitle.textContent = choice.feedbackTitle;
+  dom.feedbackBody.textContent = choice.feedback;
+  dom.scienceFootnote.textContent = choice.footnote;
+  dom.effectList.innerHTML = Object.entries(choice.effects)
+    .filter(([, value]) => value !== 0)
+    .map(([key, value]) => {
+      const meta = metricMeta[key];
+      const isBeneficial = key === "stress" ? value < 0 : value > 0;
+      const direction = value > 0 ? "up" : "down";
+      return `
+        <span class="effect-chip ${isBeneficial ? "positive" : "negative"}">
+          ${meta.label} ${direction === "up" ? "+" : ""}${value}
+        </span>
+      `;
+    })
+    .join("");
+
+  dom.nextButtonText.textContent =
+    state.dayIndex === scenarios.length - 1 ? "完成第一关" : `进入第${state.dayIndex + 2}天`;
+  dom.feedbackPanel.hidden = false;
+}
+
+function renderMetrics(effects = null) {
+  Object.entries(state.metrics).forEach(([key, value]) => {
+    const card = document.querySelector(`[data-metric="${key}"]`);
+    const valueElement = card.querySelector("[data-value]");
+    const bar = card.querySelector(".metric-track");
+    const fill = card.querySelector(".metric-fill");
+    const note = card.querySelector("[data-note]");
+
+    valueElement.textContent = String(value);
+    fill.style.width = `${value}%`;
+    bar.setAttribute("aria-valuenow", String(value));
+    note.textContent = metricNote(key, value);
+
+    if (effects && Object.hasOwn(effects, key)) {
+      card.classList.remove("is-changing");
+      void card.offsetWidth;
+      card.classList.add("is-changing");
+    }
+  });
+}
+
+function metricNote(key, value) {
+  if (key === "good") {
+    if (value >= 75) return "群落活跃且稳定";
+    if (value >= 55) return "正在建立稳定群落";
+    return "有益菌活跃度偏低";
+  }
+  if (key === "diversity") {
+    if (value >= 75) return "食物种类带来了变化";
+    if (value >= 55) return "还可以更丰富";
+    return "食物多样性有待增加";
+  }
+  if (key === "barrier") {
+    if (value >= 75) return "屏障状态较稳定";
+    if (value >= 55) return "状态平稳";
+    return "需要更多休息与规律饮食";
+  }
+  if (value <= 25) return "压力较低";
+  if (value <= 50) return "存在一些波动";
+  return "压力偏高";
+}
+
+function ecoMessage() {
+  const { good, diversity, barrier, stress } = state.metrics;
+  if (stress >= 65 || barrier <= 42) return "花园正在经历波动，给它一点恢复时间";
+  if (good >= 76 && diversity >= 70 && barrier >= 70) return "不同菌群正在形成更丰富的群落";
+  if (diversity >= 68) return "食物多样性正在丰富这片花园";
+  if (barrier >= 70) return "屏障状态正在趋于稳定";
+  return "群落正在适应今天的选择";
+}
+
+function renderEcosystem() {
+  const { good, diversity, barrier, stress } = state.metrics;
+  dom.goodLayer.style.opacity = String(0.28 + (good / 100) * 0.72);
+  dom.diverseLayer.style.opacity = String(0.16 + (diversity / 100) * 0.84);
+  dom.riskLayer.style.opacity = String(0.06 + (stress / 100) * 0.9);
+  dom.barrierLayer.style.opacity = String(0.18 + (barrier / 100) * 0.82);
+  dom.goodLayer.style.transform = `scale(${0.94 + good / 1600})`;
+  dom.diverseLayer.style.transform = `scale(${0.94 + diversity / 1600})`;
+  dom.ecoStatus.textContent = ecoMessage();
+}
+
+function createMicrobe(type, x, y, rotation, scale = 1) {
+  const transform = `translate(${x} ${y}) rotate(${rotation}) scale(${scale})`;
+  if (type === "round") {
+    return `
+      <g transform="${transform}">
+        <path d="M-12 0h-9M12 0h9M0-12v-9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+        <circle r="12" fill="currentColor" />
+        <circle cx="-4" cy="-2" r="1.6" fill="#fffaf0" />
+        <circle cx="4" cy="-2" r="1.6" fill="#fffaf0" />
+      </g>
+    `;
+  }
+  if (type === "rod") {
+    return `
+      <g transform="${transform}">
+        <path d="M-10 8-18 16M10 8 18 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+        <rect x="-10" y="-17" width="20" height="34" rx="10" fill="currentColor" />
+        <circle cx="-3" cy="-3" r="1.5" fill="#fffaf0" />
+        <circle cx="4" cy="-3" r="1.5" fill="#fffaf0" />
+      </g>
+    `;
+  }
+  return `
+    <g transform="${transform}">
+      <path d="M0-17 5-6 17-4 8 5 10 17 0 10-10 17-8 5-17-4-5-6Z" fill="currentColor" />
+      <circle cx="-4" cy="-2" r="1.5" fill="#fffaf0" />
+      <circle cx="4" cy="-2" r="1.5" fill="#fffaf0" />
+    </g>
+  `;
+}
+
+function buildEcosystem() {
+  const goodPositions = [
+    [126, 182, -11, 0.9, "round"],
+    [212, 151, 18, 0.72, "rod"],
+    [276, 169, -18, 0.8, "round"],
+    [360, 242, 18, 0.86, "rod"],
+    [447, 287, -12, 0.72, "round"],
+    [530, 260, 21, 0.8, "rod"],
+    [593, 190, -19, 0.68, "round"],
+  ];
+  const diversePositions = [
+    [159, 243, 23, 0.62, "star"],
+    [247, 221, -19, 0.58, "rod"],
+    [325, 208, 8, 0.66, "round"],
+    [404, 286, -22, 0.6, "star"],
+    [488, 335, 15, 0.55, "rod"],
+    [571, 287, -9, 0.58, "star"],
+  ];
+  const riskPositions = [
+    [184, 166, 18, 0.58, "star"],
+    [301, 239, -17, 0.55, "star"],
+    [477, 300, 21, 0.52, "star"],
+    [554, 228, -12, 0.56, "star"],
+    [621, 166, 24, 0.5, "star"],
+  ];
+
+  dom.goodLayer.innerHTML = goodPositions
+    .map(([x, y, rotation, scale, type]) =>
+      createMicrobe(type, x, y, rotation, scale).replaceAll("currentColor", "#347e70"),
+    )
+    .join("");
+
+  const diversityColors = ["#d79b3e", "#5e8194", "#b96d54", "#7c9053", "#408b83", "#b18454"];
+  dom.diverseLayer.innerHTML = diversePositions
+    .map(([x, y, rotation, scale, type], index) =>
+      createMicrobe(type, x, y, rotation, scale).replaceAll(
+        "currentColor",
+        diversityColors[index % diversityColors.length],
+      ),
+    )
+    .join("");
+
+  dom.riskLayer.innerHTML = riskPositions
+    .map(([x, y, rotation, scale, type]) =>
+      createMicrobe(type, x, y, rotation, scale).replaceAll("currentColor", "#c7654d"),
+    )
+    .join("");
+
+  const barrierPaths = [
+    "M85 187c17-20 37-20 55-5",
+    "M148 139c18-21 40-23 61-9",
+    "M218 112c20-17 43-13 61 3",
+    "M287 149c18 7 35 22 46 42",
+    "M341 211c17 12 30 29 37 50",
+    "M401 284c17 9 34 14 54 12",
+    "M468 319c17 2 34-3 49-14",
+    "M526 295c18-5 34-16 46-31",
+    "M578 238c14-15 24-33 27-52",
+    "M603 151c12-15 27-23 47-22",
+  ];
+  dom.barrierLayer.innerHTML = barrierPaths.map((path) => `<path d="${path}" />`).join("");
+}
+
+function calculateEcologyScore() {
+  const { good, diversity, barrier, stress } = state.metrics;
+  return Math.round(
+    good * 0.28 + diversity * 0.25 + barrier * 0.25 + (100 - stress) * 0.22,
+  );
+}
+
+function knowledgeAccuracy() {
+  if (!state.knowledge.total) return 0;
+  return Math.round((state.knowledge.correct / state.knowledge.total) * 100);
+}
+
+function calculateScore() {
+  return Math.round(calculateEcologyScore() * 0.6 + knowledgeAccuracy() * 0.4);
+}
+
+function resultContent(score) {
+  if (score >= 70) {
+    return {
+      title: "三关通关，花园正盛",
+      summary:
+        "你完成了生活选择、菌群分类与证据连线，游戏里的生态和知识挑战都表现良好。真正的微生态管理不是追求某一种“神奇食物”，而是长期保持饮食多样、规律作息和合理用药。",
+    };
+  }
+  if (score >= 55) {
+    return {
+      title: "三关通关，花园仍在生长",
+      summary:
+        "你已经建立了关于肠道微生态的基础认识，也有继续调整的空间。游戏里的选择和分类都是简化呈现，不能替代医生对个人情况的判断。",
+    };
+  }
+  return {
+    title: "三关完成，先给花园一点时间",
+    summary:
+      "这一局里，生态指标或知识挑战出现了较多波动。别把游戏结果当成健康诊断，从下一餐、今晚的睡眠或一次谨慎的用药选择开始调整就好。",
+  };
+}
+
+function weakestTip() {
+  const { good, diversity, barrier, stress } = state.metrics;
+  const items = [
+    { key: "good", value: good, tip: "下一餐加入一种全谷物、豆类或蔬果，让有益菌有更稳定的“口粮”。" },
+    { key: "diversity", value: diversity, tip: "试着让一周内的食物颜色和种类更多一些，不必追求每顿都完美。" },
+    { key: "barrier", value: barrier, tip: "优先把睡眠和吃饭时间规律起来；持续腹痛、腹泻或便血时应就医。" },
+    { key: "stress", value: stress, tip: "减少频繁的高油高糖夜宵和酒精摄入；需要用药时先咨询医生或药师。" },
+  ];
+  if (stress >= 60) return items[3].tip;
+  return [...items].sort((a, b) => a.value - b.value)[0].tip;
+}
+
+function levelStat(label, value, color = "#3c8b78") {
+  return `
+    <div class="level-stat" style="--stat-color: ${color}">
+      <span>${label}</span>
+      <strong>${value}</strong>
+    </div>
+  `;
+}
+
+function showLevelComplete(levelIndex) {
+  state.levelIndex = levelIndex;
+  const level = levels[levelIndex];
+  const isFinalLevel = levelIndex === levels.length - 1;
+
+  dom.levelCompleteKicker.textContent = isFinalLevel ? "全部关卡完成" : `第${levelIndex + 1}关完成`;
+  dom.levelCompleteTitle.textContent = level.shortTitle;
+  dom.levelCompleteSummary.textContent = level.completeSummary;
+  dom.nextLevelName.textContent = level.nextName;
+  dom.continueLevelText.textContent = isFinalLevel ? "查看最终报告" : `进入${levels[levelIndex + 1].name}`;
+
+  if (levelIndex === 0) {
+    dom.levelStatRow.innerHTML = [
+      ["有益菌活跃", state.metrics.good, metricMeta.good.color],
+      ["菌群多样性", state.metrics.diversity, metricMeta.diversity.color],
+      ["肠道屏障", state.metrics.barrier, metricMeta.barrier.color],
+      ["失衡压力", state.metrics.stress, metricMeta.stress.color],
+    ]
+      .map(([label, value, color]) => levelStat(label, `${value}/100`, color))
+      .join("");
+  } else if (levelIndex === 1) {
+    dom.levelStatRow.innerHTML = [
+      levelStat("分类正确", `${state.classificationCorrect} / ${classificationItems.length}`),
+      levelStat("知识准确率", `${knowledgeAccuracy()}%`, "#d79b3e"),
+      levelStat("当前关卡", "2 / 3", "#597e96"),
+    ].join("");
+  } else {
+    dom.levelStatRow.innerHTML = [
+      levelStat("连线完成", `${state.matchingSolved.length} / ${matchingPairs.length}`),
+      levelStat("知识挑战", `${state.knowledge.correct} / ${state.knowledge.total}`, "#d79b3e"),
+      levelStat("综合得分", calculateScore(), "#597e96"),
+    ].join("");
+  }
+
+  showScreen("level");
+}
+
+function startClassification() {
+  state.levelIndex = 1;
+  state.classificationIndex = 0;
+  state.classificationAnswered = false;
+  showScreen("classification");
+  renderClassification();
+}
+
+function renderClassification() {
+  const item = classificationItems[state.classificationIndex];
+  state.classificationAnswered = false;
+  dom.classificationCounter.textContent = `菌群卡 ${String(state.classificationIndex + 1).padStart(2, "0")}`;
+  dom.classMicrobeName.textContent = item.name;
+  dom.classMicrobeLatin.textContent = item.latin;
+  dom.classMicrobeHint.textContent = `提示：${item.hint}`;
+  dom.classProgressLabel.textContent = `${state.classificationIndex + 1} / ${classificationItems.length}`;
+  dom.classProgressBar.style.width = `${((state.classificationIndex + 1) / classificationItems.length) * 100}%`;
+  dom.classFeedback.hidden = true;
+  dom.classFeedback.classList.remove("is-wrong");
+  dom.microbePortrait.removeAttribute("data-category");
+  dom.classOptions.forEach((button) => {
+    button.disabled = false;
+    button.classList.remove("is-correct", "is-wrong");
+  });
+  renderLevelStrips();
+}
+
+function answerClassification(category) {
+  if (state.classificationAnswered) return;
+  state.classificationAnswered = true;
+
+  const item = classificationItems[state.classificationIndex];
+  const isCorrect = category === item.answer;
+  state.knowledge.total += 1;
+  if (isCorrect) {
+    state.knowledge.correct += 1;
+    state.classificationCorrect += 1;
+  }
+
+  dom.classOptions.forEach((button) => {
+    button.disabled = true;
+    button.classList.toggle("is-correct", button.dataset.category === item.answer);
+    button.classList.toggle(
+      "is-wrong",
+      button.dataset.category === category && !isCorrect,
+    );
+  });
+
+  dom.microbePortrait.dataset.category = item.answer;
+  dom.classVerdict.textContent = isCorrect ? "回答正确" : "这次没选对";
+  dom.classAnswerLabel.textContent = `正确分类：${categoryLabels[item.answer]}`;
+  dom.classFeedbackTitle.textContent = item.title;
+  dom.classFeedbackBody.textContent = item.explanation;
+  dom.classKnowledgeNote.textContent = item.note;
+  dom.classFeedback.classList.toggle("is-wrong", !isCorrect);
+  dom.classFeedback.hidden = false;
+  dom.classNextText.textContent =
+    state.classificationIndex === classificationItems.length - 1
+      ? "完成第二关"
+      : "下一张菌群卡";
+}
+
+function nextClassification() {
+  if (!state.classificationAnswered) return;
+  state.classificationIndex += 1;
+  if (state.classificationIndex >= classificationItems.length) {
+    showLevelComplete(1);
+    return;
+  }
+  renderClassification();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderMatchColumn(container, kind, order) {
+  container.innerHTML = order
+    .map((pairIndex) => {
+      const pair = matchingPairs[pairIndex];
+      const label = kind === "microbe" ? pair.microbe : kind === "condition" ? pair.condition : pair.treatment;
+      const detail = kind === "microbe" ? pair.microbeDetail : "";
+      return `
+        <button class="match-card" type="button" data-kind="${kind}" data-pair-id="${pair.id}">
+          <strong>${label}</strong>
+          ${detail ? `<small>${detail}</small>` : ""}
+        </button>
+      `;
+    })
+    .join("");
+
+  container.querySelectorAll(".match-card").forEach((button) => {
+    button.addEventListener("click", () => selectMatchCard(kind, button.dataset.pairId));
+  });
+}
+
+function startMatching() {
+  state.levelIndex = 2;
+  state.matchingSolved = [];
+  state.matchingSelection = { microbe: null, condition: null, treatment: null };
+  state.matchingFeedbackMode = null;
+  renderMatchingBoard();
+  showScreen("matching");
+}
+
+function renderMatchingBoard() {
+  renderMatchColumn(dom.matchMicrobes, "microbe", [1, 0, 2]);
+  renderMatchColumn(dom.matchConditions, "condition", [2, 1, 0]);
+  renderMatchColumn(dom.matchTreatments, "treatment", [0, 2, 1]);
+  dom.matchingLines.innerHTML = "";
+  dom.matchingFeedback.hidden = true;
+  dom.matchingFeedback.classList.remove("is-wrong");
+  updateMatchingControls();
+  renderLevelStrips();
+}
+
+function selectMatchCard(kind, pairId) {
+  if (!dom.matchingFeedback.hidden) return;
+  state.matchingSelection[kind] =
+    state.matchingSelection[kind] === pairId ? null : pairId;
+  document.querySelectorAll(".match-card").forEach((button) => {
+    const selected =
+      button.dataset.kind === kind &&
+      button.dataset.pairId === state.matchingSelection[kind];
+    button.classList.toggle("is-selected", selected);
+  });
+  updateMatchingControls();
+}
+
+function updateMatchingControls() {
+  const selectedCount = Object.values(state.matchingSelection).filter(Boolean).length;
+  dom.checkMatchingButton.disabled = selectedCount < 3 || !dom.matchingFeedback.hidden;
+  dom.matchingProgressLabel.textContent = `${state.matchingSolved.length} / ${matchingPairs.length}`;
+  dom.matchingProgressBar.style.width = `${(state.matchingSolved.length / matchingPairs.length) * 100}%`;
+  dom.matchingInstruction.textContent =
+    selectedCount === 3
+      ? "三张卡已选好，检查它们是否属于同一组。"
+      : `已选择 ${selectedCount} / 3 张卡。从每一列各选一张。`;
+}
+
+function showMatchingFeedback(isCorrect, pair) {
+  state.matchingFeedbackMode = isCorrect ? "correct" : "wrong";
+  dom.matchingFeedback.classList.toggle("is-wrong", !isCorrect);
+  dom.matchingVerdict.textContent = isCorrect ? "连线正确" : "这组还不匹配";
+  dom.matchingAnswerLabel.textContent = isCorrect
+    ? `${pair.microbe} ↔ ${pair.condition}`
+    : "换一种组合再试";
+  dom.matchingFeedbackTitle.textContent = isCorrect ? pair.title : "三列之间还没有形成同一条证据链";
+  dom.matchingFeedbackBody.textContent = isCorrect
+    ? pair.explanation
+    : pair.wrongFeedback;
+  dom.matchingKnowledgeNote.textContent = isCorrect
+    ? pair.note
+    : `知识点：${pair.note}`;
+  dom.matchingNextText.textContent =
+    isCorrect && state.matchingSolved.length === matchingPairs.length
+      ? "完成第三关"
+      : isCorrect
+        ? "继续下一组"
+        : "重新选择";
+  dom.matchingFeedback.hidden = false;
+  dom.checkMatchingButton.disabled = true;
+}
+
+function checkMatching() {
+  const ids = Object.values(state.matchingSelection);
+  if (ids.some((id) => !id)) return;
+
+  state.knowledge.total += 1;
+  const samePair = new Set(ids).size === 1;
+  const pair = matchingPairs.find((item) => item.id === ids[0]);
+  const selectedCards = [...document.querySelectorAll(".match-card.is-selected")];
+
+  if (samePair) {
+    state.knowledge.correct += 1;
+    if (!state.matchingSolved.includes(pair.id)) {
+      state.matchingSolved.push(pair.id);
+    }
+    selectedCards.forEach((card) => {
+      card.classList.add("is-matched");
+      card.classList.remove("is-selected");
+      card.disabled = true;
+    });
+    drawMatchingLines();
+    dom.matchingProgressLabel.textContent = `${state.matchingSolved.length} / ${matchingPairs.length}`;
+    dom.matchingProgressBar.style.width = `${(state.matchingSolved.length / matchingPairs.length) * 100}%`;
+    showMatchingFeedback(true, pair);
+    return;
+  }
+
+  selectedCards.forEach((card) => card.classList.add("is-wrong"));
+  showMatchingFeedback(false, pair);
+}
+
+function nextMatching() {
+  if (state.matchingFeedbackMode === "correct") {
+    if (state.matchingSolved.length === matchingPairs.length) {
+      showLevelComplete(2);
+      return;
+    }
+    document.querySelectorAll(".match-card").forEach((card) => {
+      card.classList.remove("is-selected");
+    });
+    state.matchingSelection = { microbe: null, condition: null, treatment: null };
+    state.matchingFeedbackMode = null;
+    dom.matchingFeedback.hidden = true;
+    updateMatchingControls();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
+  document.querySelectorAll(".match-card.is-wrong").forEach((card) => {
+    card.classList.remove("is-wrong");
+  });
+  document.querySelectorAll(".match-card.is-selected").forEach((card) => {
+    card.classList.remove("is-selected");
+  });
+  state.matchingSelection = { microbe: null, condition: null, treatment: null };
+  state.matchingFeedbackMode = null;
+  dom.matchingFeedback.hidden = true;
+  updateMatchingControls();
+}
+
+function drawMatchingLines() {
+  const boardRect = dom.matchingBoard.getBoundingClientRect();
+  if (!boardRect.width) return;
+  dom.matchingLines.setAttribute("viewBox", `0 0 ${boardRect.width} ${boardRect.height}`);
+  dom.matchingLines.innerHTML = "";
+  const colors = ["#3c8b78", "#c7654d", "#597e96"];
+
+  state.matchingSolved.forEach((id, index) => {
+    const microbe = dom.matchingBoard.querySelector(
+      `.match-card[data-kind="microbe"][data-pair-id="${id}"]`,
+    );
+    const condition = dom.matchingBoard.querySelector(
+      `.match-card[data-kind="condition"][data-pair-id="${id}"]`,
+    );
+    const treatment = dom.matchingBoard.querySelector(
+      `.match-card[data-kind="treatment"][data-pair-id="${id}"]`,
+    );
+    if (!microbe || !condition || !treatment) return;
+
+    const microbeRect = microbe.getBoundingClientRect();
+    const conditionRect = condition.getBoundingClientRect();
+    const treatmentRect = treatment.getBoundingClientRect();
+    const first = {
+      x1: microbeRect.right - boardRect.left,
+      y1: microbeRect.top + microbeRect.height / 2 - boardRect.top,
+      x2: conditionRect.left - boardRect.left,
+      y2: conditionRect.top + conditionRect.height / 2 - boardRect.top,
+    };
+    const second = {
+      x1: conditionRect.right - boardRect.left,
+      y1: first.y2,
+      x2: treatmentRect.left - boardRect.left,
+      y2: treatmentRect.top + treatmentRect.height / 2 - boardRect.top,
+    };
+    const mid1 = (first.x1 + first.x2) / 2;
+    const mid2 = (second.x1 + second.x2) / 2;
+    dom.matchingLines.insertAdjacentHTML(
+      "beforeend",
+      `<path class="match-line" style="--line-color: ${colors[index % colors.length]}" d="M${first.x1} ${first.y1} C${mid1} ${first.y1} ${mid1} ${first.y2} ${first.x2} ${first.y2}" />
+       <path class="match-line" style="--line-color: ${colors[index % colors.length]}" d="M${second.x1} ${second.y1} C${mid2} ${second.y1} ${mid2} ${second.y2} ${second.x2} ${second.y2}" />`,
+    );
+  });
+}
+
+function continueLevel() {
+  if (state.levelIndex === 0) {
+    startClassification();
+  } else if (state.levelIndex === 1) {
+    startMatching();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  const score = calculateScore();
+  const result = resultContent(score);
+  const ringLength = 351.86;
+  const previousBest = Number(localStorage.getItem("gut-game-best-v2") || 0);
+  const best = Math.max(previousBest, score);
+  localStorage.setItem("gut-game-best-v2", String(best));
+
+  dom.resultTitle.textContent = result.title;
+  dom.resultSummary.textContent = result.summary;
+  dom.scoreValue.textContent = String(score);
+  dom.scoreRing.style.strokeDashoffset = String(ringLength * (1 - score / 100));
+  dom.bestScore.textContent = best > previousBest ? `新纪录 · ${best}` : `最佳纪录 · ${best}`;
+
+  dom.reportMetrics.innerHTML = Object.entries(state.metrics)
+    .map(([key, value]) => {
+      const meta = metricMeta[key];
+      return `
+        <article class="report-metric" style="--report-color: ${meta.color}">
+          <div class="report-metric-head">
+            <span>${meta.label}</span>
+            <strong>${value}</strong>
+          </div>
+          <div class="metric-track" role="progressbar" aria-label="${meta.label}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${value}">
+            <span class="metric-fill" style="width: ${value}%"></span>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
+  dom.knowledgeSummary.innerHTML = `
+    <div class="knowledge-summary-copy">
+      <div>
+        <span>知识挑战</span>
+        <strong>${state.knowledge.correct} / ${state.knowledge.total}</strong>
+      </div>
+      <p>两次挑战的综合准确率 ${knowledgeAccuracy()}%</p>
+    </div>
+    <div class="metric-track" role="progressbar" aria-label="知识挑战准确率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${knowledgeAccuracy()}">
+      <span class="metric-fill" style="width: ${knowledgeAccuracy()}%"></span>
+    </div>
+  `;
+
+  dom.historyList.innerHTML =
+    state.history
+      .map(
+        (item) => `
+        <div class="history-item">
+          <span class="history-day">DAY ${item.day}</span>
+          <span class="history-choice">${item.title}</span>
+          <span class="history-tag">${item.tag}</span>
+        </div>
+      `,
+      )
+      .join("") +
+    `
+      <div class="history-item">
+        <span class="history-day">LEVEL 2</span>
+        <span class="history-choice">菌群分类挑战</span>
+        <span class="history-tag">答对 ${state.classificationCorrect} / ${classificationItems.length}</span>
+      </div>
+      <div class="history-item">
+        <span class="history-day">LEVEL 3</span>
+        <span class="history-choice">菌群 × 健康问题 × 合理应对</span>
+        <span class="history-tag">连线 ${state.matchingSolved.length} / ${matchingPairs.length}</span>
+      </div>
+    `;
+
+  const accuracy = knowledgeAccuracy();
+  const tips = [
+    weakestTip(),
+    accuracy < 75
+      ? "回到答错的知识卡，重点分清“菌株差异”和“宿主状态”，比记住绝对好坏标签更有用。"
+      : "你已经能区分菌群分类中的语境差异，可以继续学习具体菌株和适用人群的证据。",
+    "把“食物多样、规律作息、合理用药”当成长期方向，而不是一次必须满分的考试。",
+    "没有一种食物或益生菌能替代均衡饮食和正规医疗；特殊人群使用益生菌前应先咨询医生。",
+  ];
+  dom.tipList.innerHTML = tips
+    .map((tip) => `<li><span>${icon("check")}</span><p>${tip}</p></li>`)
+    .join("");
+
+  showScreen("result");
+  requestAnimationFrame(() => {
+    dom.scoreRing.style.strokeDashoffset = String(ringLength * (1 - score / 100));
+  });
+}
+
+function goNext() {
+  if (!state.answered) return;
+  if (state.dayIndex >= scenarios.length - 1) {
+    showLevelComplete(0);
+    return;
+  }
+  state.dayIndex += 1;
+  renderDay();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showToast(message) {
+  clearTimeout(toastTimer);
+  dom.toast.textContent = message;
+  dom.toast.classList.add("is-visible");
+  toastTimer = window.setTimeout(() => dom.toast.classList.remove("is-visible"), 2400);
+}
+
+async function copyReport() {
+  const { good, diversity, barrier, stress } = state.metrics;
+  const report = [
+    `我在《肠道小宇宙》完成了三关生态挑战`,
+    `游戏内综合得分：${calculateScore()}`,
+    `有益菌活跃 ${good} · 菌群多样性 ${diversity} · 肠道屏障 ${barrier} · 失衡压力 ${stress}`,
+    `知识挑战答对 ${state.knowledge.correct} / ${state.knowledge.total}`,
+    `这是一个科普小游戏，不构成健康评估。`,
+  ].join("\n");
+
+  try {
+    await navigator.clipboard.writeText(report);
+    showToast("报告已复制，可以分享给朋友");
+  } catch {
+    const textarea = document.createElement("textarea");
+    textarea.value = report;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.append(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    textarea.remove();
+    showToast("报告已复制，可以分享给朋友");
+  }
+}
+
+buildEcosystem();
+renderMetrics();
+renderEcosystem();
+renderLevelStrips();
+
+dom.startButton.addEventListener("click", startGame);
+dom.restartButton.addEventListener("click", startGame);
+dom.playAgainButton.addEventListener("click", startGame);
+dom.nextButton.addEventListener("click", goNext);
+dom.continueLevelButton.addEventListener("click", continueLevel);
+dom.classOptions.forEach((button) => {
+  button.addEventListener("click", () => answerClassification(button.dataset.category));
+});
+dom.classNextButton.addEventListener("click", nextClassification);
+dom.checkMatchingButton.addEventListener("click", checkMatching);
+dom.matchingNextButton.addEventListener("click", nextMatching);
+dom.copyButton.addEventListener("click", copyReport);
+dom.brandButton.addEventListener("click", () => {
+  if (state.screen === "start") return;
+  showScreen("start");
+});
+
+window.addEventListener("resize", () => {
+  if (state.screen === "matching") drawMatchingLines();
+});
+
+</script>
+  </body>
+</html>

@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="肠道小宇宙是一款三分钟肠道微生态科普小游戏。通过三个日常选择，观察菌群、膳食多样性与肠道屏障的游戏内变化。"
+    />
+    <meta name="theme-color" content="#173f3b" />
+    <title>肠道小宇宙 · 3关生态挑战</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./levels.css" />
+  </head>
+  <body>
+    <svg class="icon-library" aria-hidden="true">
+      <symbol id="icon-activity" viewBox="0 0 24 24">
+        <path d="M3 12h4l2.2-7 4.1 14 2.2-7H21" />
+      </symbol>
+      <symbol id="icon-arrow-right" viewBox="0 0 24 24">
+        <path d="M5 12h14M13 6l6 6-6 6" />
+      </symbol>
+      <symbol id="icon-rotate" viewBox="0 0 24 24">
+        <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+        <path d="M3 3v5h5" />
+      </symbol>
+      <symbol id="icon-leaf" viewBox="0 0 24 24">
+        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 18 2 20 2c0 2 1 4.5-1 8a7 7 0 0 1-8 10Z" />
+        <path d="M2 21c0-3 1.9-5.4 5-6.7" />
+      </symbol>
+      <symbol id="icon-shield" viewBox="0 0 24 24">
+        <path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3v8Z" />
+        <path d="m9 12 2 2 4-4" />
+      </symbol>
+      <symbol id="icon-sparkles" viewBox="0 0 24 24">
+        <path d="m12 3 1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z" />
+        <path d="m19 16 .7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7L19 16Z" />
+      </symbol>
+      <symbol id="icon-chart" viewBox="0 0 24 24">
+        <path d="M3 3v18h18" />
+        <path d="M7 16v-4M12 16V7M17 16v-6" />
+      </symbol>
+      <symbol id="icon-utensils" viewBox="0 0 24 24">
+        <path d="M5 3v7a3 3 0 0 0 6 0V3M8 3v18M19 3c-2 2-3 4-3 7v3h3v8" />
+      </symbol>
+      <symbol id="icon-coffee" viewBox="0 0 24 24">
+        <path d="M4 8h13v6a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6V8Z" />
+        <path d="M17 10h2a3 3 0 0 1 0 6h-2M6 3v2M10 3v2M14 3v2" />
+      </symbol>
+      <symbol id="icon-moon" viewBox="0 0 24 24">
+        <path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z" />
+      </symbol>
+      <symbol id="icon-pill" viewBox="0 0 24 24">
+        <path d="m10.5 20.5-7-7a5 5 0 0 1 7-7l7 7a5 5 0 0 1-7 7Z" />
+        <path d="m7 10 7 7" />
+      </symbol>
+      <symbol id="icon-stethoscope" viewBox="0 0 24 24">
+        <path d="M5 3v5a4 4 0 0 0 8 0V3M3 3h4M11 3h4M9 12v3a5 5 0 0 0 10 0v-2" />
+        <circle cx="19" cy="10" r="2" />
+      </symbol>
+      <symbol id="icon-book" viewBox="0 0 24 24">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13Z" />
+        <path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5" />
+      </symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24">
+        <path d="m5 12 4 4L19 6" />
+      </symbol>
+      <symbol id="icon-copy" viewBox="0 0 24 24">
+        <rect x="8" y="8" width="12" height="12" rx="2" />
+        <path d="M16 8V4H4v12h4" />
+      </symbol>
+      <symbol id="icon-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 11v5M12 8h.01" />
+      </symbol>
+    </svg>
+
+    <div class="page-texture" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <button class="brand" id="brandButton" type="button" aria-label="回到游戏开始页">
+        <span class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><use href="#icon-activity"></use></svg>
+        </span>
+        <span class="brand-copy">
+          <strong>肠道小宇宙</strong>
+          <small>3关生态挑战</small>
+        </span>
+      </button>
+      <div class="header-actions">
+        <span class="science-badge">
+          <span class="science-dot" aria-hidden="true"></span>
+          科普互动体验
+        </span>
+        <button class="text-button" id="restartButton" type="button" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-rotate"></use></svg>
+          重新开始
+        </button>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <section class="screen start-screen is-active" id="startScreen">
+        <div class="start-copy">
+          <p class="eyebrow">
+            <span class="eyebrow-line" aria-hidden="true"></span>
+            三关微观生态实验
+          </p>
+          <h1>给肠道，<br /><span>种一座花园。</span></h1>
+          <p class="start-lead">
+            第一关做生活选择，第二关辨认菌群角色，第三关完成菌群、健康问题与应对方式的三列连线。
+          </p>
+          <div class="start-actions">
+            <button class="primary-button" id="startButton" type="button">
+              开始3关挑战
+              <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+            </button>
+            <p class="start-meta">约6分钟 · 3个关卡 · 3种玩法</p>
+          </div>
+          <div class="start-facts" aria-label="游戏特色">
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-leaf"></use></svg>即时反馈</span>
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-book"></use></svg>科学解释</span>
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-chart"></use></svg>生态报告</span>
+          </div>
+        </div>
+
+        <div class="start-visual" aria-label="插画：肠道花园中的不同微生物">
+          <div class="visual-label">
+            <span>生态观察窗</span>
+            <span class="visual-live"><i aria-hidden="true"></i>模拟中</span>
+          </div>
+          <svg class="garden-art" viewBox="0 0 760 620" role="img" aria-labelledby="gardenTitle gardenDesc">
+            <title id="gardenTitle">肠道微生态花园</title>
+            <desc id="gardenDesc">温暖的肠道路径中生活着形状、颜色各异的微生物。</desc>
+            <defs>
+              <linearGradient id="gardenBg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#f7eee4" />
+                <stop offset=".56" stop-color="#f0e4d6" />
+                <stop offset="1" stop-color="#e7ead8" />
+              </linearGradient>
+              <linearGradient id="gutOuter" x1="0" y1="0" x2="1" y2=".5">
+                <stop offset="0" stop-color="#dd9b86" />
+                <stop offset=".52" stop-color="#efb49e" />
+                <stop offset="1" stop-color="#d88874" />
+              </linearGradient>
+              <linearGradient id="gutInner" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#fff8ef" />
+                <stop offset=".55" stop-color="#ffefe3" />
+                <stop offset="1" stop-color="#f7ded2" />
+              </linearGradient>
+              <pattern id="dotGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1.2" fill="#264f49" opacity=".13" />
+              </pattern>
+            </defs>
+            <rect x="24" y="24" width="712" height="572" rx="8" fill="url(#gardenBg)" />
+            <rect x="24" y="24" width="712" height="572" rx="8" fill="url(#dotGrid)" />
+            <path class="organic-line line-one" d="M-15 505C104 390 198 441 296 521S515 620 794 445" />
+            <path class="organic-line line-two" d="M-16 112C131 180 234 147 330 68S528 10 781 93" />
+            <path class="gut-shadow" d="M60 346C99 180 235 133 350 236S546 419 691 280C738 235 705 131 621 120" />
+            <path class="gut-outer" d="M60 346C99 180 235 133 350 236S546 419 691 280C738 235 705 131 621 120" />
+            <path class="gut-inner" d="M60 346C99 180 235 133 350 236S546 419 691 280C738 235 705 131 621 120" />
+            <path class="gut-shine" d="M93 312C129 197 240 174 332 258S535 385 664 263" />
+            <g class="villi" aria-hidden="true">
+              <path d="m126 218 11-20M164 186l7-22M208 161l3-23M253 146l-2-23M299 153l-8-22M340 178l-12-20M371 217l-17-16M401 263l-20-13M437 305l-21-8M476 341l-20-4M514 369l-14 9M552 383l-4 19M592 377l5 20M632 352l13 18M667 312l19 11M690 271l22 4" />
+            </g>
+            <g class="microbe-cluster microbe-cluster-a">
+              <g transform="translate(206 219) rotate(-9)">
+                <path class="microbe-tail" d="M-15 5-29-2M15 5 29-2" />
+                <rect x="-18" y="-17" width="36" height="34" rx="17" fill="#2d8174" />
+                <circle cx="-6" cy="-2" r="2.5" fill="#f8f2e8" />
+                <circle cx="7" cy="-2" r="2.5" fill="#f8f2e8" />
+                <path d="M-5 8c4 4 8 4 12 0" fill="none" stroke="#f8f2e8" stroke-width="2" stroke-linecap="round" />
+              </g>
+              <g transform="translate(300 181) rotate(17)">
+                <path d="M-10 8-19 19M11 8l9 11" class="microbe-tail" />
+                <rect x="-14" y="-22" width="28" height="44" rx="14" fill="#e49350" />
+                <circle cx="-4" cy="-4" r="2" fill="#fffaf0" />
+                <circle cx="5" cy="-4" r="2" fill="#fffaf0" />
+              </g>
+              <g transform="translate(362 299) rotate(28)">
+                <path class="microbe-tail" d="M-18 0h-12M18 0h12M0-18v-12M0 18v12" />
+                <circle r="17" fill="#5a7996" />
+                <circle cx="-5" cy="-3" r="2.3" fill="#fff" />
+                <circle cx="5" cy="-3" r="2.3" fill="#fff" />
+                <path d="M-5 7c3 3 7 3 10 0" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" />
+              </g>
+              <g transform="translate(503 320) rotate(-18)">
+                <path class="microbe-tail" d="M-13-9-25-16M13-9 25-16" />
+                <path d="M0-23 7-8 23-5 11 6 14 22 0 14-14 22-11 6-23-5-7-8Z" fill="#c67d50" />
+                <circle cx="-5" cy="-2" r="2" fill="#fffaf0" />
+                <circle cx="5" cy="-2" r="2" fill="#fffaf0" />
+              </g>
+              <g transform="translate(613 184) rotate(13)">
+                <path class="microbe-tail" d="M-11 9-21 17M11 9 21 17" />
+                <rect x="-13" y="-20" width="26" height="40" rx="13" fill="#408c86" />
+                <circle cx="-4" cy="-3" r="2" fill="#fff" />
+                <circle cx="5" cy="-3" r="2" fill="#fff" />
+              </g>
+            </g>
+            <g class="microbe-cluster microbe-cluster-b">
+              <g transform="translate(133 315) rotate(23)">
+                <rect x="-9" y="-20" width="18" height="40" rx="9" fill="#dca54d" />
+                <path d="M0-9v18" stroke="#fff4d8" stroke-width="2" opacity=".7" />
+              </g>
+              <g transform="translate(254 361) rotate(-22)">
+                <circle r="11" fill="#8ba05d" />
+                <path d="M-8-1h16M0-9v16" stroke="#f7f1df" stroke-width="1.8" opacity=".8" />
+              </g>
+              <g transform="translate(454 202) rotate(8)">
+                <rect x="-8" y="-16" width="16" height="32" rx="8" fill="#d28264" />
+                <circle cx="0" cy="-3" r="2" fill="#fff9ef" />
+              </g>
+              <g transform="translate(554 390) rotate(-4)">
+                <circle r="12" fill="#607f94" />
+                <path d="M-7 4c4 3 10 3 14 0" fill="none" stroke="#fff" stroke-width="1.6" />
+              </g>
+            </g>
+            <g class="floating-note note-one">
+              <rect x="88" y="90" width="158" height="48" rx="7" />
+              <circle cx="112" cy="114" r="8" />
+              <path d="m108 114 3 3 5-7" />
+              <text x="130" y="118">菌群多样性</text>
+            </g>
+            <g class="floating-note note-two">
+              <rect x="524" y="425" width="154" height="48" rx="7" />
+              <circle cx="548" cy="449" r="8" />
+              <path d="M544 449h8" />
+              <text x="566" y="453">屏障状态</text>
+            </g>
+            <g class="art-caption">
+              <text x="80" y="512">每个人都有自己的微生态</text>
+              <text x="80" y="540" class="art-caption-small">画面为科普示意，不代表真实检测结果</text>
+            </g>
+          </svg>
+          <div class="visual-foot">
+            <span><i class="legend-dot good" aria-hidden="true"></i>有益菌</span>
+            <span><i class="legend-dot diverse" aria-hidden="true"></i>多样菌群</span>
+            <span><i class="legend-dot risk" aria-hidden="true"></i>失衡压力</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen game-screen" id="gameScreen" hidden>
+        <div class="run-header">
+          <div>
+            <p class="eyebrow" id="dayKicker">DAY 01 · 早餐</p>
+            <h1>今天，肠道花园会怎样回应？</h1>
+          </div>
+          <div class="run-progress">
+            <div class="progress-copy">
+              <span>生态观察进度</span>
+              <strong id="progressLabel">1 / 3</strong>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <span id="progressBar"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="level-strip" data-level-strip aria-label="关卡进度"></div>
+
+        <div class="metric-strip" aria-label="游戏内肠道生态指标">
+          <article class="metric-card metric-good" data-metric="good">
+            <div class="metric-heading">
+              <span class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-leaf"></use></svg></span>
+              <span>有益菌活跃</span>
+            </div>
+            <div class="metric-number"><strong data-value>62</strong><span>/100</span></div>
+            <div class="metric-track" role="progressbar" aria-label="有益菌活跃" aria-valuemin="0" aria-valuemax="100" aria-valuenow="62">
+              <span class="metric-fill"></span>
+            </div>
+            <p class="metric-note" data-note>正在建立稳定群落</p>
+          </article>
+          <article class="metric-card metric-diversity" data-metric="diversity">
+            <div class="metric-heading">
+              <span class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-sparkles"></use></svg></span>
+              <span>菌群多样性</span>
+            </div>
+            <div class="metric-number"><strong data-value>54</strong><span>/100</span></div>
+            <div class="metric-track" role="progressbar" aria-label="菌群多样性" aria-valuemin="0" aria-valuemax="100" aria-valuenow="54">
+              <span class="metric-fill"></span>
+            </div>
+            <p class="metric-note" data-note>还可以更丰富</p>
+          </article>
+          <article class="metric-card metric-barrier" data-metric="barrier">
+            <div class="metric-heading">
+              <span class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-shield"></use></svg></span>
+              <span>肠道屏障</span>
+            </div>
+            <div class="metric-number"><strong data-value>60</strong><span>/100</span></div>
+            <div class="metric-track" role="progressbar" aria-label="肠道屏障" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60">
+              <span class="metric-fill"></span>
+            </div>
+            <p class="metric-note" data-note>状态平稳</p>
+          </article>
+          <article class="metric-card metric-risk" data-metric="stress">
+            <div class="metric-heading">
+              <span class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-activity"></use></svg></span>
+              <span>失衡压力</span>
+            </div>
+            <div class="metric-number"><strong data-value>38</strong><span>/100</span></div>
+            <div class="metric-track" role="progressbar" aria-label="失衡压力，数值越低越好" aria-valuemin="0" aria-valuemax="100" aria-valuenow="38">
+              <span class="metric-fill"></span>
+            </div>
+            <p class="metric-note" data-note>压力较低</p>
+          </article>
+        </div>
+
+        <div class="play-layout">
+          <section class="eco-panel" aria-labelledby="ecoHeading">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-kicker">ECOSYSTEM VIEW</p>
+                <h2 id="ecoHeading">菌群花园</h2>
+              </div>
+              <span class="live-tag"><i aria-hidden="true"></i>实时变化</span>
+            </div>
+            <div class="eco-canvas">
+              <svg id="ecoVisual" viewBox="0 0 700 400" role="img" aria-labelledby="ecoVisualTitle">
+                <title id="ecoVisualTitle">动态肠道微生态示意图</title>
+                <defs>
+                  <linearGradient id="ecoGutOuter" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#dfa08b" />
+                    <stop offset=".5" stop-color="#f0b39d" />
+                    <stop offset="1" stop-color="#d78975" />
+                  </linearGradient>
+                  <linearGradient id="ecoGutInner" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#fffaef" />
+                    <stop offset=".62" stop-color="#fff1e4" />
+                    <stop offset="1" stop-color="#f8dfd1" />
+                  </linearGradient>
+                  <pattern id="ecoDots" width="28" height="28" patternUnits="userSpaceOnUse">
+                    <circle cx="2" cy="2" r="1" fill="#294f49" opacity=".13" />
+                  </pattern>
+                </defs>
+                <rect width="700" height="400" rx="6" fill="#f5ede3" />
+                <rect width="700" height="400" rx="6" fill="url(#ecoDots)" />
+                <path class="eco-wash" d="M-20 350C110 278 194 336 282 388S505 449 722 321" />
+                <path
+                  class="eco-gut-shadow"
+                  d="M48 235C94 112 207 92 311 172S475 335 611 246C663 213 651 114 572 104"
+                />
+                <path
+                  class="eco-gut-outer"
+                  d="M48 235C94 112 207 92 311 172S475 335 611 246C663 213 651 114 572 104"
+                />
+                <path
+                  class="eco-gut-inner"
+                  d="M48 235C94 112 207 92 311 172S475 335 611 246C663 213 651 114 572 104"
+                />
+                <path
+                  class="eco-gut-highlight"
+                  d="M80 210C119 133 222 119 297 182S444 307 579 231"
+                />
+                <g id="barrierLayer" class="barrier-layer" aria-hidden="true"></g>
+                <g id="goodMicrobeLayer" class="microbe-layer good-layer" aria-hidden="true"></g>
+                <g id="diverseMicrobeLayer" class="microbe-layer diverse-layer" aria-hidden="true"></g>
+                <g id="riskMicrobeLayer" class="microbe-layer risk-layer" aria-hidden="true"></g>
+              </svg>
+            </div>
+            <div class="eco-footer">
+              <div class="eco-status">
+                <span class="eco-status-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-sparkles"></use></svg></span>
+                <div>
+                  <span>游戏内生态状态</span>
+                  <strong id="ecoStatus">群落正在适应今天的选择</strong>
+                </div>
+              </div>
+              <p>画面为科普比喻，不代表真实菌群检测。</p>
+            </div>
+          </section>
+
+          <section class="scenario-panel" aria-labelledby="scenarioTitle">
+            <div class="scenario-copy">
+              <div class="scenario-kicker">
+                <span id="scenarioNumber">01</span>
+                <span id="scenarioTag">早餐选择</span>
+              </div>
+              <h2 id="scenarioTitle">赶时间的早晨</h2>
+              <p id="scenarioNarrative">
+                早高峰只剩十分钟。你路过早餐店，准备给肠道花园“投喂”今天的第一餐。
+              </p>
+              <p class="scenario-question" id="scenarioQuestion">今天的第一口，你会怎么选？</p>
+            </div>
+
+            <div class="choice-list" id="choiceList" aria-label="今日选择"></div>
+
+            <div class="feedback-panel" id="feedbackPanel" hidden>
+              <div class="feedback-heading">
+                <span class="feedback-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-book"></use></svg>
+                </span>
+                <div>
+                  <p>肠道小知识</p>
+                  <h3 id="feedbackTitle"></h3>
+                </div>
+              </div>
+              <p class="feedback-body" id="feedbackBody"></p>
+              <div class="effect-list" id="effectList" aria-label="本日指标变化"></div>
+              <div class="science-footnote" id="scienceFootnote"></div>
+              <button class="primary-button next-button" id="nextButton" type="button">
+                <span id="nextButtonText">进入第2天</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+              </button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen challenge-screen" id="classificationScreen" hidden>
+        <div class="run-header">
+          <div>
+            <p class="eyebrow">第二关 · 菌群分类</p>
+            <h1>它们，真的只有“好”和“坏”吗？</h1>
+          </div>
+          <div class="run-progress">
+            <div class="progress-copy">
+              <span>分类挑战进度</span>
+              <strong id="classProgressLabel">1 / 5</strong>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <span id="classProgressBar"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-layout">
+          <aside class="challenge-guide" aria-labelledby="classGuideTitle">
+            <p class="panel-kicker">HOW TO THINK</p>
+            <h2 id="classGuideTitle">先别急着贴标签</h2>
+            <p>
+              同一种微生物的作用，会受到菌株、数量、所在位置和人体状态影响。这里的三个分类是游戏化简化，不是医学检验结果。
+            </p>
+            <p class="guide-note">
+              答题后都会给出解释。重点是理解菌株、数量、位置与人体状态带来的差异，而不是记住绝对好坏。
+            </p>
+          </aside>
+
+          <section class="class-game-panel" aria-labelledby="classMicrobeName">
+            <div class="microbe-card">
+              <div class="microbe-portrait" id="microbePortrait" aria-hidden="true">
+                <svg viewBox="0 0 220 150">
+                  <path class="portrait-line" d="M10 120C50 70 82 105 111 52S170 24 210 61" />
+                  <g transform="translate(110 74)">
+                    <path class="portrait-tail" d="M-38 5h-25M38 5h25M0-37v-18M0 44v16" />
+                    <circle r="36" />
+                    <circle cx="-12" cy="-5" r="4.5" fill="#fffaf0" />
+                    <circle cx="12" cy="-5" r="4.5" fill="#fffaf0" />
+                    <path class="portrait-smile" d="M-11 14c7 7 15 7 22 0" />
+                  </g>
+                </svg>
+              </div>
+              <p class="card-counter" id="classificationCounter">菌群卡 01</p>
+              <h2 id="classMicrobeName">双歧杆菌</h2>
+              <p class="microbe-latin" id="classMicrobeLatin">Bifidobacterium</p>
+              <p class="microbe-hint" id="classMicrobeHint"></p>
+            </div>
+
+            <div class="class-options" id="classOptions" aria-label="选择菌群分类">
+              <button class="class-option option-beneficial" type="button" data-category="beneficial">
+                <strong>有益 / 互助型</strong>
+              </button>
+              <button class="class-option option-neutral" type="button" data-category="neutral">
+                <strong>中性 / 情境相关</strong>
+              </button>
+              <button class="class-option option-risk" type="button" data-category="risk">
+                <strong>需警惕 / 机会型</strong>
+              </button>
+            </div>
+
+            <div class="challenge-feedback" id="classFeedback" hidden>
+              <div class="feedback-verdict">
+                <span id="classVerdict">回答正确</span>
+                <strong id="classAnswerLabel"></strong>
+              </div>
+              <h3 id="classFeedbackTitle"></h3>
+              <p id="classFeedbackBody"></p>
+              <div class="knowledge-note" id="classKnowledgeNote"></div>
+              <button class="primary-button challenge-next" id="classNextButton" type="button">
+                <span id="classNextText">下一张菌群卡</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+              </button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen challenge-screen" id="matchingScreen" hidden>
+        <div class="run-header">
+          <div>
+            <p class="eyebrow">第三关 · 三列连线</p>
+            <h1>把菌群、健康问题与合理应对连起来</h1>
+          </div>
+          <div class="run-progress">
+            <div class="progress-copy">
+              <span>已连对</span>
+              <strong id="matchingProgressLabel">0 / 3</strong>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <span id="matchingProgressBar"></span>
+            </div>
+          </div>
+        </div>
+
+        <section class="matching-panel" aria-labelledby="matchingBoardTitle">
+          <div class="matching-head">
+            <div>
+              <p class="panel-kicker">EVIDENCE MATCH</p>
+              <h2 id="matchingBoardTitle">选择三张卡，组成一条有证据的连线</h2>
+            </div>
+            <p>这些配对只覆盖有明确临床关联的简化情境，不代表所有菌群与疾病都存在一对一关系。</p>
+          </div>
+
+          <div class="matching-board" id="matchingBoard">
+            <svg class="matching-lines" id="matchingLines" aria-hidden="true"></svg>
+            <div class="matching-column">
+              <h3>菌群 / 微生物</h3>
+              <div class="match-stack" id="matchMicrobes"></div>
+            </div>
+            <div class="matching-column">
+              <h3>健康问题</h3>
+              <div class="match-stack" id="matchConditions"></div>
+            </div>
+            <div class="matching-column">
+              <h3>合理应对</h3>
+              <div class="match-stack" id="matchTreatments"></div>
+            </div>
+          </div>
+
+          <div class="matching-actions">
+            <p id="matchingInstruction">从每一列各选一张卡，然后检查它们是否属于同一组。</p>
+            <button class="primary-button" id="checkMatchingButton" type="button" disabled>
+              检查连线
+              <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+            </button>
+          </div>
+
+          <div class="challenge-feedback matching-feedback" id="matchingFeedback" hidden>
+            <div class="feedback-verdict">
+              <span id="matchingVerdict">连线正确</span>
+              <strong id="matchingAnswerLabel"></strong>
+            </div>
+            <h3 id="matchingFeedbackTitle"></h3>
+            <p id="matchingFeedbackBody"></p>
+            <div class="knowledge-note" id="matchingKnowledgeNote"></div>
+            <button class="primary-button challenge-next" id="matchingNextButton" type="button">
+              <span id="matchingNextText">继续下一组</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+            </button>
+          </div>
+        </section>
+      </section>
+
+      <section class="screen level-screen" id="levelScreen" hidden>
+        <div class="level-complete">
+          <div class="level-complete-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><use href="#icon-sparkles"></use></svg>
+          </div>
+          <p class="eyebrow">
+            <span class="eyebrow-line" aria-hidden="true"></span>
+            <span id="levelCompleteKicker">第一关完成</span>
+          </p>
+          <h1 id="levelCompleteTitle">日常选择</h1>
+          <p class="level-complete-lead" id="levelCompleteSummary"></p>
+          <div class="level-stat-row" id="levelStatRow" aria-label="本关结束时的生态指标"></div>
+          <div class="level-unlock">
+            <span>下一关</span>
+            <strong id="nextLevelName">吃出多样性</strong>
+          </div>
+          <button class="primary-button" id="continueLevelButton" type="button">
+            <span id="continueLevelText">进入第二关</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="screen result-screen" id="resultScreen" hidden>
+        <div class="result-head">
+          <div class="result-copy">
+            <p class="eyebrow">
+              <span class="eyebrow-line" aria-hidden="true"></span>
+              三关微生态观察报告
+            </p>
+            <h1 id="resultTitle">恢复中的花园</h1>
+            <p id="resultSummary"></p>
+            <div class="result-actions">
+              <button class="primary-button" id="playAgainButton" type="button">
+                再玩一次
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-rotate"></use></svg>
+              </button>
+              <button class="secondary-button" id="copyButton" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-copy"></use></svg>
+                复制报告
+              </button>
+            </div>
+          </div>
+          <div class="score-display" aria-label="游戏内综合得分">
+            <svg viewBox="0 0 140 140" aria-hidden="true">
+              <circle class="score-track" cx="70" cy="70" r="56" />
+              <circle class="score-progress" id="scoreRing" cx="70" cy="70" r="56" />
+            </svg>
+            <div class="score-value">
+              <strong id="scoreValue">68</strong>
+              <span>游戏内综合得分</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-grid">
+          <section class="report-panel" aria-labelledby="metricsReportTitle">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-kicker">ECOSYSTEM TRACE</p>
+                <h2 id="metricsReportTitle">生态轨迹</h2>
+              </div>
+              <span class="best-score" id="bestScore"></span>
+            </div>
+            <div class="report-metrics" id="reportMetrics"></div>
+            <div class="knowledge-summary" id="knowledgeSummary"></div>
+            <div class="history-list" id="historyList" aria-label="九日选择记录"></div>
+          </section>
+
+          <section class="report-panel report-tips" aria-labelledby="tipsTitle">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-kicker">NEXT SMALL STEP</p>
+                <h2 id="tipsTitle">下一步小行动</h2>
+              </div>
+              <span class="tip-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><use href="#icon-leaf"></use></svg>
+              </span>
+            </div>
+            <ul id="tipList"></ul>
+            <div class="report-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-info"></use></svg>
+              <p>游戏内分数只用于呈现选择带来的变化，不是健康评估或疾病风险判断。</p>
+            </div>
+            <details class="source-details">
+              <summary>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-book"></use></svg>
+                科学依据与说明
+              </summary>
+              <p>
+                内容参考《中国居民膳食指南（2022）》、世界卫生组织抗菌药物耐药科普以及国际益生菌与益生元科学协会（ISAPP）关于益生菌的共识。游戏对复杂研究进行了简化，不能替代医生建议。
+              </p>
+            </details>
+          </section>
+        </div>
+
+        <p class="disclaimer">
+          本游戏仅用于健康科普，不提供诊断或治疗建议。持续不适、发热或症状加重时，请及时就医。
+        </p>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./game.js"></script>
+  </body>
+</html>
